@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/cbk.cloudUploadImage.Infrastructure/Certificate/server-ca.pem
+/cbk.cloudUploadImage.Infrastructure/Certificate/client-key.pem
+/cbk.cloudUploadImage.Infrastructure/Certificate/client-cert.pem
