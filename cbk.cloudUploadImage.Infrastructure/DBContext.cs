@@ -27,6 +27,9 @@ namespace cbk.cloudUploadImage.Infrastructure
                 .IsRequired();
 
             modelBuilder.Entity<ImageInformation>()
+                .HasNoKey();
+
+            modelBuilder.Entity<ImageInformation>()
                 .Property(i => i.AccountName)
                 .HasMaxLength(20)
                 .IsRequired();
