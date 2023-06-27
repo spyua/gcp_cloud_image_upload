@@ -1,4 +1,4 @@
-namespace cbk.service.uploadImage
+namespace cbk.cloudUploadImage.service.uploadImage
 {
     public class WeatherForecast
     {

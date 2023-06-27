@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "cbk.service.uploadImage": {
+    "cbk.cloudUploadImage.service.login": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
@@ -8,7 +8,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7105;http://localhost:5147"
+      "applicationUrl": "https://localhost:7184;http://localhost:5194"
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -31,8 +31,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:31478",
-      "sslPort": 44337
+      "applicationUrl": "http://localhost:40245",
+      "sslPort": 44363
     }
   }
 }
