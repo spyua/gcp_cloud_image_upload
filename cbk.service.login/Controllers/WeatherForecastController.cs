@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace cbk.gcp.service.uploadImage.Controllers
+namespace cbk.service.login.Controllers
 {
     [ApiController]
     [Route("[controller]")]
