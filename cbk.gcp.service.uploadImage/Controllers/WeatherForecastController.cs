@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace gcp_image_upload_service.Controllers
+namespace cbk.gcp.service.uploadImage.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -18,7 +18,7 @@ namespace gcp_image_upload_service.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
+        [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
