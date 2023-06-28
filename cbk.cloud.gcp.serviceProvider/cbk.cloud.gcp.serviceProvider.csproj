@@ -10,4 +10,9 @@
     <PackageReference Include="Npgsql" Version="7.0.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CloudSQL\" />
+    <Folder Include="CloudStorage\" />
+  </ItemGroup>
+
 </Project>
