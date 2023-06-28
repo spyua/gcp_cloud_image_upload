@@ -35,7 +35,7 @@ namespace cbk.cloudUploadImage.service.login.Service
             _accountRepository.Add(account);
             await _accountRepository.SaveChangesAsync();
 
-            return new Account() { Username = name, Password = password};
+            return new Account() { Username = name, Password = hashedPassword };
         }
 
         public string GenerateJwtToken(Account account)
