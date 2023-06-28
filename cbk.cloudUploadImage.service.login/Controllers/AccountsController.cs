@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace cbk.cloudUploadImage.service.login.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class AccountsController : ControllerBase
     {
         private readonly ILoginService _loginService;
@@ -17,7 +19,7 @@ namespace cbk.cloudUploadImage.service.login.Controllers
         public async Task<ActionResult<AccountCreateResponse>> CreateAccount(Account model)
         {
             var account = await _loginService.CreateAccount(model.Username, model.Password);
-
+            
             if (account == null)
             {
                 return BadRequest("Account already exists.");

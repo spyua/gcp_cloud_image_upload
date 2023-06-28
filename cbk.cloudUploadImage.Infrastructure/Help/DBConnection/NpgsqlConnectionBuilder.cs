@@ -17,11 +17,11 @@ namespace cbk.cloudUploadImage.Infrastructure.Help.DBConnection
             if (sslConnect)
             {
                 // Setting certificate pem file path
-                builder.TrustServerCertificate = true;
+                builder.TrustServerCertificate = false;
                 builder.SslMode = SslMode.VerifyCA;
                 builder.RootCertificate = connectionSetting.SeverCertificatePath;
                 builder.SslCertificate = connectionSetting.ClientCertificatePath;
-                builder.SslPassword = connectionSetting.ClientCertificateKeyPath;
+                builder.SslKey = connectionSetting.ClientCertificateKeyPath;
             }
 
             return builder.ConnectionString;
