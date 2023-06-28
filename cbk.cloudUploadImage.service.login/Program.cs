@@ -1,4 +1,5 @@
 using cbk.cloudUploadImage.Infrastructure;
+using cbk.cloudUploadImage.Infrastructure.Config;
 using cbk.cloudUploadImage.Infrastructure.Help.DBConnection;
 using cbk.cloudUploadImage.Infrastructure.Help.DBConnection.Model;
 using cbk.cloudUploadImage.Infrastructure.Repository;
@@ -6,24 +7,18 @@ using cbk.cloudUploadImage.service.login.Service;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// DB Setting (Wait Clean)
-string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-string certFolder = "Certificate";
-string clientCertFile = "client-cert.pem";
-string clientKeyFile = "client-key.pem";
-string serverCaFile = "server-ca.pem";
+var environmentConfig = new EnvironmentConfig(useMock:true);
 
 IDBConnectionBuilder connectionBuilder = new NpgsqlConnectionBuilder<DBConnectionSetting>();
 var connectionSetting = new DBConnectionSetting()
 {
-    InstanceName = "35.229.242.171",
-    DatabaseName = "postgres",
-    UserName = "cbk_testing",
-    Password = "cbktesting",
-    SeverCertificatePath = Path.Combine(baseDirectory, certFolder, serverCaFile),
-    ClientCertificatePath = Path.Combine(baseDirectory, certFolder, clientCertFile),
-    ClientCertificateKeyPath = Path.Combine(baseDirectory, certFolder, clientKeyFile)
+    InstanceName = environmentConfig.DbConfig.InstanceName,
+    DatabaseName = environmentConfig.DbConfig.DatabaseName,
+    UserName = environmentConfig.DbConfig.UserName,
+    Password = environmentConfig.DbConfig.Password,
+    SeverCertificatePath = environmentConfig.DbConfig.SeverCertificatePath,
+    ClientCertificatePath = environmentConfig.DbConfig.ClientCertificatePath,
+    ClientCertificateKeyPath = environmentConfig.DbConfig.ClientCertificateKeyPath,
 };
 
 var connectionString = connectionBuilder.BuildConnectionString(connectionSetting, true);

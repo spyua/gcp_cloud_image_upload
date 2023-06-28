@@ -16,36 +16,24 @@
             if (useMock)
             {
                 // Set Mock Data
-                InstanceName = "mock_host";
-                DatabaseName = "mock_db";
-                UserName = "mock_user";
-                Password = "mock_password";
-                SeverCertificatePath = Path.Combine(baseDirectory, certFolder, "mock_ca");
-                ClientCertificatePath = Path.Combine(baseDirectory, certFolder, "mock_cert");
-                ClientCertificateKeyPath = Path.Combine(baseDirectory, certFolder, "mock_key");
+                InstanceName = "35.229.242.171";
+                DatabaseName = "postgres";
+                UserName = "cbk_testing";
+                Password = "cbktesting";
+                SeverCertificatePath = Path.Combine(baseDirectory, certFolder, "server-ca.pem");
+                ClientCertificatePath = Path.Combine(baseDirectory, certFolder, "client-cert.pem");
+                ClientCertificateKeyPath = Path.Combine(baseDirectory, certFolder, "client-key.pem");
             }
             else
             {
                 // Get environment variable or set to default
-                InstanceName = Environment.GetEnvironmentVariable("DB_HOST") ?? "35.229.242.171";
-                DatabaseName = Environment.GetEnvironmentVariable("DB_NAME") ?? "postgres";
-                UserName = Environment.GetEnvironmentVariable("DB_USER") ?? "cbk_testing";
-                Password = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "cbktesting";
-                SeverCertificatePath = Path.Combine(
-                    baseDirectory,
-                    certFolder,
-                    Environment.GetEnvironmentVariable("DB_SERVER_CA") ?? "server-ca.pem"
-                );
-                ClientCertificatePath = Path.Combine(
-                    baseDirectory,
-                    certFolder,
-                    Environment.GetEnvironmentVariable("DB_CLIENT_CERT") ?? "client-cert.pem"
-                );
-                ClientCertificateKeyPath = Path.Combine(
-                    baseDirectory,
-                    certFolder,
-                    Environment.GetEnvironmentVariable("DB_CLIENT_KEY") ?? "client-key.pem"
-                );
+                InstanceName = Environment.GetEnvironmentVariable("DB_HOST") ?? "";
+                DatabaseName = Environment.GetEnvironmentVariable("DB_NAME") ?? "";
+                UserName = Environment.GetEnvironmentVariable("DB_USER") ?? "";
+                Password = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "";
+                SeverCertificatePath = Path.Combine(baseDirectory,certFolder,Environment.GetEnvironmentVariable("DB_SERVER_CA") ?? "");
+                ClientCertificatePath = Path.Combine(baseDirectory,certFolder,Environment.GetEnvironmentVariable("DB_CLIENT_CERT") ?? "");
+                ClientCertificateKeyPath = Path.Combine(baseDirectory,certFolder,Environment.GetEnvironmentVariable("DB_CLIENT_KEY") ?? "");
             }
         }
     }
