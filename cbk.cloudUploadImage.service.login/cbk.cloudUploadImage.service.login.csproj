@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\cbk.cloud.gcp.serviceProvider\cbk.cloud.gcp.serviceProvider.csproj" />
     <ProjectReference Include="..\cbk.cloudUploadImage.Infrastructure\cbk.cloudUploadImage.Infrastructure.csproj" />
   </ItemGroup>
 
