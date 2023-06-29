@@ -19,7 +19,7 @@ namespace cbk.cloudUploadImage.Infrastructure.Help.Internet
         }
 
         // JwtSecurityTokenHandler與SecurityTokenDescriptor
-        public string GenerateToken2(string userName, int expireMinutes = 30)
+        public string GenerateToken(string userName, int expireMinutes = 30)
         {
             var issuer = settings.Issuer;
             var signKey = settings.SignKey;
@@ -47,8 +47,11 @@ namespace cbk.cloudUploadImage.Infrastructure.Help.Internet
             return token;
         }
 
+        #region Testing Usage
+
+        /*
         // 使用 JwtBuilder, 可以客製化Claim
-        public string GenerateToken(string userName, int expireMinutes = 30)
+        public string GenerateTokenByBuilder(string userName, int expireMinutes = 30)
         {
             var issuer = settings.Issuer;
             var signKey = settings.SignKey;
@@ -70,10 +73,13 @@ namespace cbk.cloudUploadImage.Infrastructure.Help.Internet
                             .Encode();
             return token;
         }
+        */
 
         /// <summary>
         /// GenerateToken from username and secret
         /// </summary>
+
+        /*
         public string GenerateToken(string username, string secretKey)
         {
             // Base64字串轉換為字節數組的秘密金鑰。這個金鑰將被用來對 JWT 進行簽名和驗證。
@@ -97,5 +103,7 @@ namespace cbk.cloudUploadImage.Infrastructure.Help.Internet
             var token = tokenHandler.WriteToken(stoken);
             return token;
         }
+        */
+        #endregion
     }
 }

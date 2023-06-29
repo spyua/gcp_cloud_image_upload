@@ -29,6 +29,27 @@ namespace cbk.cloudUploadImage.service.login.Controllers
 
 
 
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult<ApiResponse<AccountDto>>> CreateAccount(AccountCreate model)
+        {
+            // Invalid (待寫..或後續轉到Middleware)
+
+            var account = await _loginService.CreateAccount(model.UserName, model.Password);
+
+            if (account == null)
+                return BadRequest("Account already exists.");
+
+            return Ok(new ApiResponse<AccountDto>
+            {
+                Message = "Create Account Success",
+                Data = new AccountDto() { Token = account.Token  
+                                        ,UserName = account.UserName
+                                        , Password = account.Password }
+            });
+        }
+
+
         [HttpGet]
         public async Task<ApiResponse<AccountDto>> Query([FromQuery] AccountCreate query)
         {
@@ -36,7 +57,7 @@ namespace cbk.cloudUploadImage.service.login.Controllers
             return new ApiResponse<AccountDto>
             {
                 Message = "Query Success",
-                Data = new AccountDto() { Username="123",Password="123"}
+                Data = new AccountDto() { UserName="123",Password="123"}
             };
         }
 
@@ -62,7 +83,7 @@ namespace cbk.cloudUploadImage.service.login.Controllers
         {
             if (ValidateUser(login))
             {
-                var token = _jwt.GenerateToken2(login.UserName);
+                var token = _jwt.GenerateToken(login.UserName);
                 return Ok(new { token });
             }
             else
@@ -78,25 +99,6 @@ namespace cbk.cloudUploadImage.service.login.Controllers
 
 
       
-        [HttpPost]
-        [AllowAnonymous]
-        public async Task<ActionResult<ApiResponse<AccountDto>>> CreateAccount(AccountCreate model)
-        {
-            var account = await _loginService.CreateAccount(model.UserName, model.UserName);
-            account = null;
-            if (account == null)
-            {
-                return BadRequest("Account already exists.");
-            }
-
-            var token = _loginService.GenerateJwtToken(account);
-
-            return Ok(new ApiResponse<AccountDto>
-            {
-                Message = "Create Success",
-                Data = new AccountDto() { Username = model.UserName, Password = model.Password }
-            });
-        }
-
+        
     }
 }
