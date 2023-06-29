@@ -4,8 +4,8 @@ namespace cbk.cloudUploadImage.service.login.Service
 {
     public interface ILoginService
     {
-        Task<Account> CreateAccount(string name, string password);
+        Task<AccountDto> CreateAccount(string name, string password);
 
-        string GenerateJwtToken(Account account);
+        string GenerateJwtToken(AccountDto account);
     }
 }

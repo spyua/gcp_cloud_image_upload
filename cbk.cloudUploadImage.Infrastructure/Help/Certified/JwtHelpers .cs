@@ -18,7 +18,8 @@ namespace cbk.cloudUploadImage.Infrastructure.Help.Internet
             this.settings = settings.Value;
         }
 
-        public string GenerateToken(string userName, int expireMinutes = 30)
+        // JwtSecurityTokenHandler與SecurityTokenDescriptor
+        public string GenerateToken2(string userName, int expireMinutes = 30)
         {
             var issuer = settings.Issuer;
             var signKey = settings.SignKey;
@@ -46,7 +47,8 @@ namespace cbk.cloudUploadImage.Infrastructure.Help.Internet
             return token;
         }
 
-        public string GenerateTokenTest(string userName, int expireMinutes = 30)
+        // 使用 JwtBuilder, 可以客製化Claim
+        public string GenerateToken(string userName, int expireMinutes = 30)
         {
             var issuer = settings.Issuer;
             var signKey = settings.SignKey;

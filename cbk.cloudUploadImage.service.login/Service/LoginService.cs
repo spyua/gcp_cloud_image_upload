@@ -13,7 +13,7 @@ namespace cbk.cloudUploadImage.service.login.Service
             _accountRepository = loginRepository;
         }
 
-        public async Task<Account> CreateAccount(string name, string password)
+        public async Task<AccountDto> CreateAccount(string name, string password)
         {
             IKmsService kmsService = new GoogleKmsService("affable-cacao-389805", "asia-east1", "cathy-sample-project", "cathy-sample-project-login-usage", "1");
             var encryptedPassword = kmsService.Encrypt(password);
@@ -29,13 +29,13 @@ namespace cbk.cloudUploadImage.service.login.Service
             var account = new Infrastructure.Entity.Account { Name = name, Password = hashedPassword, CreateTime = DateTime.UtcNow };
 
             // 儲存新帳戶
-            _accountRepository.Add(account);
-            await _accountRepository.SaveChangesAsync();
+           // _accountRepository.Add(account);
+            //await _accountRepository.SaveChangesAsync();
 
-            return new Account() { Username = name, Password = hashedPassword };
+            return new AccountDto() { Username = name, Password = hashedPassword };
         }
 
-        public string GenerateJwtToken(Account account)
+        public string GenerateJwtToken(AccountDto account)
         {
             // 建立 JWT token的邏輯
             //...

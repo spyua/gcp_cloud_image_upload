@@ -1,4 +1,5 @@
 ﻿using cbk.cloudUploadImage.Infrastructure.Help.Internet;
+using cbk.cloudUploadImage.service.login.Dto;
 using cbk.cloudUploadImage.service.login.Model;
 using cbk.cloudUploadImage.service.login.Service;
 using JWT.Algorithms;
@@ -9,20 +10,37 @@ namespace cbk.cloudUploadImage.service.login.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AccountsController : ControllerBase
+    public class AccountController : ControllerBase
     {
+        private readonly ILogger<AccountController> _logger;
         private readonly ILoginService _loginService;
 
         // Testing
         private readonly JwtHelpers _jwt;
 
-        public AccountsController(ILoginService loginService, JwtHelpers jwt)
+        public AccountController(ILogger<AccountController> logger
+                               , ILoginService loginService
+                               , JwtHelpers jwt)
         {
+            _logger = logger;
             _loginService = loginService;
             _jwt = jwt;
         }
 
-        
+
+
+        [HttpGet]
+        public async Task<ApiResponse<AccountDto>> Query([FromQuery] AccountCreate query)
+        {
+            //PaginationList<AccountDto> dto = await _accountSearch.QueryAsync(query);
+            return new ApiResponse<AccountDto>
+            {
+                Message = "Query Success",
+                Data = new AccountDto() { Username="123",Password="123"}
+            };
+        }
+
+
         [Authorize] // 使用此標籤確保此 Action 需要授權
         [HttpGet("username")]
         public IActionResult GetUsername()
@@ -40,11 +58,11 @@ namespace cbk.cloudUploadImage.service.login.Controllers
 
         [HttpPost("signin")]
         [AllowAnonymous]
-        public IActionResult SignIn(Account login)
+        public IActionResult SignIn(AccountCreate login)
         {
             if (ValidateUser(login))
             {
-                var token = _jwt.GenerateToken(login.Username);
+                var token = _jwt.GenerateToken2(login.UserName);
                 return Ok(new { token });
             }
             else
@@ -52,18 +70,20 @@ namespace cbk.cloudUploadImage.service.login.Controllers
                 return BadRequest();
             }
         }
-        private bool ValidateUser(Account login)
+        private bool ValidateUser(AccountCreate login)
         {
             // 这里你应该添加验证用户的逻辑
             return true;
         }
 
+
+      
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult<AccountCreateResponse>> CreateAccount(Account model)
+        public async Task<ActionResult<ApiResponse<AccountDto>>> CreateAccount(AccountCreate model)
         {
-            var account = await _loginService.CreateAccount(model.Username, model.Password);
-            
+            var account = await _loginService.CreateAccount(model.UserName, model.UserName);
+            account = null;
             if (account == null)
             {
                 return BadRequest("Account already exists.");
@@ -71,7 +91,11 @@ namespace cbk.cloudUploadImage.service.login.Controllers
 
             var token = _loginService.GenerateJwtToken(account);
 
-            return new AccountCreateResponse { Status = "OK", Token = token };
+            return Ok(new ApiResponse<AccountDto>
+            {
+                Message = "Create Success",
+                Data = new AccountDto() { Username = model.UserName, Password = model.Password }
+            });
         }
 
     }

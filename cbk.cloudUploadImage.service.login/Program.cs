@@ -11,6 +11,7 @@ using JWT.Algorithms;
 using JWT.Extensions.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -48,6 +49,7 @@ builder.Services.AddControllers();
 
 
 // Middleware invaild JWT token setting
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtAuthenticationDefaults.AuthenticationScheme;
@@ -59,7 +61,23 @@ builder.Services.AddAuthentication(options =>
         options.Keys = new string[] { builder.Configuration.GetValue<string>("JwtSettings:SignKey") };
         options.VerifySignature = true;
     });
+/*
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = false, // 如果你的 JWT 包含 "aud" claim，那麼你需要將這個設定為 true
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings["Issuer"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SignKey"]))
+        };
+    });
+*/
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
@@ -106,11 +124,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 // Middleware invaild JWT token setting
 app.UseAuthentication();
-app.UseAuthorization();
-
 app.Use(async (context, next) =>
 {
     try
@@ -130,7 +145,7 @@ app.Use(async (context, next) =>
         }
     }
 });
+app.UseAuthorization();
 
 app.MapControllers();
-
 app.Run();
