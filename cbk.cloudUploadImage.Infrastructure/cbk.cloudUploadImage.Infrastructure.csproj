@@ -7,24 +7,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="JWT.Extensions.AspNetCore" Version="8.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.8" />
     <PackageReference Include="Npgsql" Version="7.0.4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Certificate\" />
+    <Folder Include="CertificateFile\" />
     <Folder Include="Config\KMSKey\" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Certificate\client-cert.pem">
+    <None Update="CertificateFile\client-cert.pem">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Certificate\client-key.pem">
+    <None Update="CertificateFile\client-key.pem">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Certificate\server-ca.pem">
+    <None Update="CertificateFile\server-ca.pem">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -1,5 +1,8 @@
-﻿using cbk.cloudUploadImage.service.login.Model;
+﻿using cbk.cloudUploadImage.Infrastructure.Help.Internet;
+using cbk.cloudUploadImage.service.login.Model;
 using cbk.cloudUploadImage.service.login.Service;
+using JWT.Algorithms;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cbk.cloudUploadImage.service.login.Controllers
@@ -10,9 +13,49 @@ namespace cbk.cloudUploadImage.service.login.Controllers
     {
         private readonly ILoginService _loginService;
 
-        public AccountsController(ILoginService loginService)
+        // Testing
+        private readonly JwtHelpers _jwt;
+
+        public AccountsController(ILoginService loginService, JwtHelpers jwt)
         {
             _loginService = loginService;
+            _jwt = jwt;
+        }
+
+        
+        [Authorize] // 使用此標籤確保此 Action 需要授權
+        [HttpGet("username")]
+        public IActionResult GetUsername()
+        {
+            // 在 Controller 中，User 是一個內建的屬性，用來取得當前用戶的 ClaimsPrincipal
+            var username = User.Identity?.Name;
+
+            if (username == null)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(username);
+        }
+
+        [HttpPost("signin")]
+        [AllowAnonymous]
+        public IActionResult SignIn(Account login)
+        {
+            if (ValidateUser(login))
+            {
+                var token = _jwt.GenerateToken(login.Username);
+                return Ok(new { token });
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+        private bool ValidateUser(Account login)
+        {
+            // 这里你应该添加验证用户的逻辑
+            return true;
         }
 
         [HttpPost]

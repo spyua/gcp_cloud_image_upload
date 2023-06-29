@@ -3,7 +3,7 @@
     public class DbEnvironmentConfig : IDbEnvironmentConfig
     {
         private string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-        private string certFolder = "Certificate";
+        private string certFolder = "CertificateFile";
         public string InstanceName { get; private set; }
         public string DatabaseName { get; private set; }
         public string UserName { get; private set; }
