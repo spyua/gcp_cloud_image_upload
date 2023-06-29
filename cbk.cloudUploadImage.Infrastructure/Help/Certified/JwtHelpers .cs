@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 
 namespace cbk.cloudUploadImage.Infrastructure.Help.Internet
 {
@@ -21,6 +22,34 @@ namespace cbk.cloudUploadImage.Infrastructure.Help.Internet
         {
             var issuer = settings.Issuer;
             var signKey = settings.SignKey;
+            var symmetricKey = Encoding.UTF8.GetBytes(signKey);
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var now = DateTime.UtcNow;
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), // JWT ID
+                    new Claim(JwtRegisteredClaimNames.Iss, issuer),
+                    new Claim(JwtRegisteredClaimNames.Sub, userName), // User.Identity.Name
+                    new Claim(JwtRegisteredClaimNames.Exp, new DateTimeOffset(now.AddMinutes(expireMinutes)).ToUnixTimeSeconds().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Nbf, new DateTimeOffset(now).ToUnixTimeSeconds().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Iat, new DateTimeOffset(now).ToUnixTimeSeconds().ToString()),
+                    new Claim(ClaimTypes.Name, userName)
+            }),
+                Expires = now.AddMinutes(expireMinutes),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey), SecurityAlgorithms.HmacSha256)
+            };
+            var stoken = tokenHandler.CreateToken(tokenDescriptor);
+            var token = tokenHandler.WriteToken(stoken);
+            return token;
+        }
+
+        public string GenerateTokenTest(string userName, int expireMinutes = 30)
+        {
+            var issuer = settings.Issuer;
+            var signKey = settings.SignKey;
 
             var token = JwtBuilder.Create()
                             .WithAlgorithm(new HMACSHA256Algorithm()) // symmetric
@@ -30,7 +59,7 @@ namespace cbk.cloudUploadImage.Infrastructure.Help.Internet
                             .AddClaim("iss", issuer)
                             // .AddClaim("nameid", userName) // User.Identity.Name
                             .AddClaim("sub", userName) // User.Identity.Name
-                                                       // .AddClaim("aud", "The Audience") // 由於你的 API 受眾通常沒有區分特別對象，因此通常不太需要設定，也不太需要驗證
+                            // .AddClaim("aud", "The Audience") // 由於你的 API 受眾通常沒有區分特別對象，因此通常不太需要設定，也不太需要驗證
                             .AddClaim("exp", DateTimeOffset.UtcNow.AddMinutes(expireMinutes).ToUnixTimeSeconds())
                             .AddClaim("nbf", DateTimeOffset.UtcNow.ToUnixTimeSeconds())
                             .AddClaim("iat", DateTimeOffset.UtcNow.ToUnixTimeSeconds())

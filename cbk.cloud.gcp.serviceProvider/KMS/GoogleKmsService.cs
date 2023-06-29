@@ -24,5 +24,7 @@ namespace cbk.cloud.gcp.serviceProvider.KMS
             byte[] signature = result.Mac.ToByteArray();
             return signature;
         }
+
+
     }
 }

@@ -59,6 +59,7 @@ namespace cbk.cloudUploadImage.service.login.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult<AccountCreateResponse>> CreateAccount(Account model)
         {
             var account = await _loginService.CreateAccount(model.Username, model.Password);
