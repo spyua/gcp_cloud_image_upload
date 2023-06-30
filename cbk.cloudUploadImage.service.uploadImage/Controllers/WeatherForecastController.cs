@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace cbk.cloudUploadImage.service.uploadImage.Controllers
+namespace cbk.image.service.upload.Controllers
 {
     [ApiController]
     [Route("[controller]")]

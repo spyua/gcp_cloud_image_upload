@@ -1,4 +1,4 @@
-﻿namespace cbk.cloud.gcp.serviceProvider.KMS
+﻿namespace cbk.cloud.serviceProvider.KMS
 {
     public interface IKmsService
     {

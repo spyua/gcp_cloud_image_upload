@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>bd7ff3a2-726c-48a0-bcc1-4719ea0d005c</UserSecretsId>
+    <UserSecretsId>e19863f1-44c4-40ad-89f1-c1540b204439</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
@@ -18,8 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\cbk.cloud.gcp.serviceProvider\cbk.cloud.gcp.serviceProvider.csproj" />
-    <ProjectReference Include="..\cbk.cloudUploadImage.Infrastructure\cbk.cloudUploadImage.Infrastructure.csproj" />
+    <ProjectReference Include="..\cbk.cloudUploadImage.Infrastructure\cbk.image.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

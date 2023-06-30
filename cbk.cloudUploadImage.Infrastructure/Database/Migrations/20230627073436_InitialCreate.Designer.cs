@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using cbk.cloudUploadImage.Infrastructure.Database;
+using cbk.image.Infrastructure.Database;
 
 #nullable disable
 
-namespace cbk.cloudUploadImage.Infrastructure.Migrations
+namespace cbk.image.Infrastructure.Migrations
 {
     [DbContext(typeof(DBContext))]
     [Migration("20230627073436_InitialCreate")]

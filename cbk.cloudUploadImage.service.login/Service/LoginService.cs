@@ -1,9 +1,9 @@
-﻿using cbk.cloudUploadImage.Infrastructure.Repository;
-using cbk.cloudUploadImage.service.login.Model;
-using cbk.cloud.gcp.serviceProvider.KMS;
-using cbk.cloudUploadImage.Infrastructure.Security.Jwt;
+﻿using cbk.image.Infrastructure.Repository;
+using cbk.image.service.member.Model;
+using cbk.image.Infrastructure.Security.Jwt;
+using cbk.cloud.serviceProvider.KMS;
 
-namespace cbk.cloudUploadImage.service.login.Service
+namespace cbk.image.service.member.Service
 {
     public class LoginService : ILoginService
     {

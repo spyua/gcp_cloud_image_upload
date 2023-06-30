@@ -1,6 +1,6 @@
-﻿using cbk.cloudUploadImage.Infrastructure.Database.Entity;
+﻿using cbk.image.Infrastructure.Database.Entity;
 
-namespace cbk.cloudUploadImage.Infrastructure.Repository
+namespace cbk.image.Infrastructure.Repository
 {
     public interface IAccountRepository
     {

@@ -1,9 +1,8 @@
-﻿using cbk.cloud.gcp.serviceProvider.CloudRun.EnviromentConfig;
+﻿using cbk.cloud.serviceProvider.CloudRun.EnviromentConfig;
 using Google.Cloud.Kms.V1;
 using Google.Protobuf;
-using Google.Type;
 
-namespace cbk.cloud.gcp.serviceProvider.KMS
+namespace cbk.cloud.serviceProvider.KMS
 {
     public class GoogleKmsService : IKmsService
     {

@@ -4,7 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace cbk.cloudUploadImage.Infrastructure.Security.Jwt
+namespace cbk.image.Infrastructure.Security.Jwt
 {
     public class JwtService : IJwtService
     {

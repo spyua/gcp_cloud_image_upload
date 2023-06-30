@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace cbk.cloudUploadImage.Infrastructure.Security.Jwt
+namespace cbk.image.Infrastructure.Security.Jwt
 {
     public class JwtSettings
     {

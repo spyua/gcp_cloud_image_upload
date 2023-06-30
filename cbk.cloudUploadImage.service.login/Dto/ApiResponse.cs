@@ -1,4 +1,4 @@
-﻿namespace cbk.cloudUploadImage.service.login.Dto
+﻿namespace cbk.image.service.member.Dto
 {
     public class ApiResponse
     {

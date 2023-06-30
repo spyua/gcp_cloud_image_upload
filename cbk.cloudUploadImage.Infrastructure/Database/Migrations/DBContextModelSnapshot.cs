@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using cbk.cloudUploadImage.Infrastructure.Database;
+using cbk.image.Infrastructure.Database;
 
 #nullable disable
 
-namespace cbk.cloudUploadImage.Infrastructure.Migrations
+namespace cbk.image.Infrastructure.Migrations
 {
     [DbContext(typeof(DBContext))]
     partial class DBContextModelSnapshot : ModelSnapshot

@@ -1,4 +1,4 @@
-﻿namespace cbk.cloudUploadImage.Infrastructure.Security.Jwt
+﻿namespace cbk.image.Infrastructure.Security.Jwt
 {
     public class TokenDetail
     {

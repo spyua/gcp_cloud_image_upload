@@ -1,6 +1,6 @@
-﻿using cbk.cloudUploadImage.service.login.Dto;
+﻿using cbk.image.service.member.Dto;
 
-namespace cbk.cloudUploadImage.service.login.Middleware
+namespace cbk.image.service.member.Middleware
 {
     public class ExceptionMiddleware
     {

@@ -1,7 +1,7 @@
-﻿using cbk.cloudUploadImage.Infrastructure.Database.DBConnection.Model;
+﻿using cbk.image.Infrastructure.Database.DBConnection.Model;
 using Npgsql;
 
-namespace cbk.cloudUploadImage.Infrastructure.Database.DBConnection
+namespace cbk.image.Infrastructure.Database.DBConnection
 {
     public class NpgsqlConnectionBuilder<T> : IDBConnectionBuilder where T : IDBConnectionModel
     {

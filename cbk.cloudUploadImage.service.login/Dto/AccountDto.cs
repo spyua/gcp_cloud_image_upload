@@ -1,4 +1,4 @@
-﻿namespace cbk.cloudUploadImage.service.login.Model
+﻿namespace cbk.image.service.member.Model
 {
     public class AccountBase
     {

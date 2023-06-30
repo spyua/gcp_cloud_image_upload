@@ -1,6 +1,6 @@
-﻿using cbk.cloud.gcp.serviceProvider.CloudRun.EnviromentConfig;
+﻿using cbk.cloud.serviceProvider.CloudRun.EnviromentConfig;
 
-namespace cbk.cloudUploadImage.Infrastructure.Config.KMSEncryption
+namespace cbk.image.Infrastructure.Config.KMSEncryption
 {
     public class EncryptionEnvironmentConfig : IEncryptionEnvironmentConfig
     {

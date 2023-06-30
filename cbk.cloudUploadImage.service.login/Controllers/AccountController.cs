@@ -1,10 +1,10 @@
-﻿using cbk.cloudUploadImage.service.login.Dto;
-using cbk.cloudUploadImage.service.login.Model;
-using cbk.cloudUploadImage.service.login.Service;
+﻿using cbk.image.service.member.Dto;
+using cbk.image.service.member.Model;
+using cbk.image.service.member.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace cbk.cloudUploadImage.service.login.Controllers
+namespace cbk.image.service.member.Controllers
 {
     // 待補版本設計....
 

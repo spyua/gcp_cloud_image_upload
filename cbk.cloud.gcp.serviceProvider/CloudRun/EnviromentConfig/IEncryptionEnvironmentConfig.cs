@@ -1,4 +1,4 @@
-﻿namespace cbk.cloud.gcp.serviceProvider.CloudRun.EnviromentConfig
+﻿namespace cbk.cloud.serviceProvider.CloudRun.EnviromentConfig
 {
     public interface IEncryptionEnvironmentConfig
     {

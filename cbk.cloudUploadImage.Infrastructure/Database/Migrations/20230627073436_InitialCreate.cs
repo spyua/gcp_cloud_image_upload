@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace cbk.cloudUploadImage.Infrastructure.Migrations
+namespace cbk.image.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

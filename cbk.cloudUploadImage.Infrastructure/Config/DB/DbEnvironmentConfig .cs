@@ -1,6 +1,6 @@
-﻿using cbk.cloud.gcp.serviceProvider.CloudRun.EnviromentConfig;
+﻿using cbk.cloud.serviceProvider.CloudRun.EnviromentConfig;
 
-namespace cbk.cloudUploadImage.Infrastructure.Config.DB
+namespace cbk.image.Infrastructure.Config.DB
 {
     public class DbEnvironmentConfig : IDbEnvironmentConfig
     {

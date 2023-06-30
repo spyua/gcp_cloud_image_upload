@@ -1,6 +1,6 @@
-﻿using cbk.cloudUploadImage.service.login.Model;
+﻿using cbk.image.service.member.Model;
 
-namespace cbk.cloudUploadImage.service.login.Service
+namespace cbk.image.service.member.Service
 {
     public interface ILoginService
     {

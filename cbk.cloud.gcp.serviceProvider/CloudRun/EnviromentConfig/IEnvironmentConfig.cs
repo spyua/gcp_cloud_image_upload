@@ -1,4 +1,4 @@
-﻿using cbk.cloud.gcp.serviceProvider.CloudRun.EnviromentConfig;
+﻿using cbk.cloud.serviceProvider.CloudRun.EnviromentConfig;
 
 namespace cbk.cloud.gcp.serviceProvider.CloudRun.EnviromentConfig
 {

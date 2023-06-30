@@ -1,4 +1,4 @@
-﻿namespace cbk.cloudUploadImage.Infrastructure.Database.DBConnection.Model
+﻿namespace cbk.image.Infrastructure.Database.DBConnection.Model
 {
     public class DBConnectionSetting : IDBConnectionModel
     {

@@ -1,4 +1,4 @@
-﻿namespace cbk.cloudUploadImage.Infrastructure.Database.Entity
+﻿namespace cbk.image.Infrastructure.Database.Entity
 {
     public class Account
     {

@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\cbk.cloud.gcp.serviceProvider\cbk.cloud.gcp.serviceProvider.csproj" />
+    <ProjectReference Include="..\cbk.cloud.gcp.serviceProvider\cbk.cloud.serviceProvider.csproj" />
   </ItemGroup>
 
   <ItemGroup>

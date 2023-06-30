@@ -1,8 +1,8 @@
-﻿using cbk.cloudUploadImage.Infrastructure.Database;
-using cbk.cloudUploadImage.Infrastructure.Database.Entity;
+﻿using cbk.image.Infrastructure.Database;
+using cbk.image.Infrastructure.Database.Entity;
 using Microsoft.EntityFrameworkCore;
 
-namespace cbk.cloudUploadImage.Infrastructure.Repository
+namespace cbk.image.Infrastructure.Repository
 {
     public class AccountRepository : IAccountRepository
     {
