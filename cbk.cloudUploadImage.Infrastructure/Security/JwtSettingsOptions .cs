@@ -1,4 +1,4 @@
-﻿namespace cbk.cloudUploadImage.Infrastructure.Help.Certified
+﻿namespace cbk.cloudUploadImage.Infrastructure.Security
 {
     public class JwtSettingsOptions
     {

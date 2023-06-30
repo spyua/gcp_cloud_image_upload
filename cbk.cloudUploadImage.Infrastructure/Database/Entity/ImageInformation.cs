@@ -1,4 +1,4 @@
-﻿namespace cbk.cloudUploadImage.Infrastructure.Entity
+﻿namespace cbk.cloudUploadImage.Infrastructure.Database.Entity
 {
     public class ImageInformation
     {

@@ -1,4 +1,4 @@
-﻿using cbk.cloudUploadImage.Infrastructure.Entity;
+﻿using cbk.cloudUploadImage.Infrastructure.Database.Entity;
 
 namespace cbk.cloudUploadImage.Infrastructure.Repository
 {

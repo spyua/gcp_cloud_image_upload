@@ -1,41 +1,40 @@
-﻿namespace cbk.cloudUploadImage.Infrastructure.Help.DBConnection.Model
+﻿namespace cbk.cloudUploadImage.Infrastructure.Database.DBConnection.Model
 {
-    public class DBConnectionSetting : IDBConnectionModel
+    public interface IDBConnectionModel
     {
         /// <summary>
         /// DB Instance Name
         /// </summary>
-        public string InstanceName { get; set; } = string.Empty;
+        public string InstanceName { get; set; }
 
         /// <summary>
         /// DB Schema Name
         /// </summary>
-        public string DatabaseName { get; set; } = string.Empty;
+        public string DatabaseName { get; set; }
 
         /// <summary>
         /// Login User Name
         /// </summary>
-        public string UserName { get; set; } = string.Empty;
+        public string UserName { get; set; }
 
         /// <summary>
         /// Login User Password
         /// </summary>
-        public string Password { get; set; } = string.Empty;
+        public string Password { get; set; }
 
         /// <summary>
         /// SeverCertificatePath: The path to the certificate file used by the server.
         /// </summary>
-        public string SeverCertificatePath { get; set; } = string.Empty;
+        public string SeverCertificatePath { get; set; }
 
         /// <summary>
         /// ClientCertificatePath: The path to the certificate file used by the client.
         /// </summary>
-        public string ClientCertificatePath { get; set; } = string.Empty;
+        public string ClientCertificatePath { get; set; }
 
         /// <summary>
         /// ClientCertificateKeyPath: The path to the certificate key file used by the client.
         /// </summary>
-        public string ClientCertificateKeyPath { get; set; } = string.Empty;
-
+        public string ClientCertificateKeyPath { get; set; }
     }
 }

@@ -1,6 +1,6 @@
-﻿using cbk.cloudUploadImage.Infrastructure.Help.DBConnection.Model;
+﻿using cbk.cloudUploadImage.Infrastructure.Database.DBConnection.Model;
 
-namespace cbk.cloudUploadImage.Infrastructure.Help.DBConnection
+namespace cbk.cloudUploadImage.Infrastructure.Database.DBConnection
 {
     public interface IDBConnectionBuilder
     {

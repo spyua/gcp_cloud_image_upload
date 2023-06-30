@@ -1,4 +1,4 @@
-﻿using cbk.cloudUploadImage.Infrastructure.Help.Internet;
+﻿using cbk.cloudUploadImage.Infrastructure.Security;
 using cbk.cloudUploadImage.service.login.Dto;
 using cbk.cloudUploadImage.service.login.Model;
 using cbk.cloudUploadImage.service.login.Service;
@@ -48,6 +48,8 @@ namespace cbk.cloudUploadImage.service.login.Controllers
                                         , Password = account.Password }
             });
         }
+
+
 
 
         [HttpGet]

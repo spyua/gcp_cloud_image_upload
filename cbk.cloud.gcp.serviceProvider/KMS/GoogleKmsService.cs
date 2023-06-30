@@ -17,6 +17,11 @@ namespace cbk.cloud.gcp.serviceProvider.KMS
             _keyVersionName = new CryptoKeyVersionName(projectId, locationId, keyRingId, keyId, keyVersion);
         }
 
+        public void ConnectKeyManagementService()
+        {
+
+        }
+
         public byte[] Encrypt(string plaintext)
         {
             ByteString dataByteString = ByteString.CopyFromUtf8(plaintext);

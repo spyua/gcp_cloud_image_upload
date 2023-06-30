@@ -1,4 +1,4 @@
-using cbk.cloudUploadImage.Infrastructure;
+using cbk.cloudUploadImage.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

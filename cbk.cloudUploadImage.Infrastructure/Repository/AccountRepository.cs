@@ -1,4 +1,5 @@
-﻿using cbk.cloudUploadImage.Infrastructure.Entity;
+﻿using cbk.cloudUploadImage.Infrastructure.Database;
+using cbk.cloudUploadImage.Infrastructure.Database.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace cbk.cloudUploadImage.Infrastructure.Repository

@@ -1,7 +1,7 @@
 ﻿using cbk.cloudUploadImage.Infrastructure.Repository;
 using cbk.cloudUploadImage.service.login.Model;
 using cbk.cloud.gcp.serviceProvider.KMS;
-using cbk.cloudUploadImage.Infrastructure.Help.Internet;
+using cbk.cloudUploadImage.Infrastructure.Security;
 
 namespace cbk.cloudUploadImage.service.login.Service
 {
@@ -17,11 +17,10 @@ namespace cbk.cloudUploadImage.service.login.Service
         }
 
         public async Task<AccountDto?> CreateAccount(string userName, string password)
-        {
-            // Wati Clean
+        {    
             IKmsService kmsService = new GoogleKmsService("affable-cacao-389805", "asia-east1", "cathy-sample-project", "cathy-sample-project-login-usage", "1");
             var encryptedPassword = kmsService.Encrypt(password);
-            
+
             // 先檢查是否已存在相同名稱的帳號
             var existingAccount = await _accountRepository.GetByName(userName);
             if (existingAccount != null)
@@ -34,8 +33,8 @@ namespace cbk.cloudUploadImage.service.login.Service
             var account = new Infrastructure.Entity.Account { Name = userName, Password = hashedPassword, CreateTime = DateTime.UtcNow };
 
             // 儲存新帳戶
-            // _accountRepository.Add(account);
-            //await _accountRepository.SaveChangesAsync();
+            _accountRepository.Add(account);
+            await _accountRepository.SaveChangesAsync();
 
             return new AccountDto() { Token = "" ,UserName = userName, Password = hashedPassword };
         }

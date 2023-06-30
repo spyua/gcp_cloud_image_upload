@@ -1,7 +1,7 @@
-﻿using cbk.cloudUploadImage.Infrastructure.Entity;
+﻿using cbk.cloudUploadImage.Infrastructure.Database.Entity;
 using Microsoft.EntityFrameworkCore;
 
-namespace cbk.cloudUploadImage.Infrastructure
+namespace cbk.cloudUploadImage.Infrastructure.Database
 {
     public class DBContext : DbContext
     {
