@@ -12,21 +12,21 @@ WORKDIR /src
 COPY ["cbk.image.service.member/*.csproj", "./cbk.image.service.member/"]
 COPY ["cbk.image.Infrastructure/*.csproj", "./cbk.image.Infrastructure/"]
 COPY ["cbk.cloud.serviceProvider/*.csproj", "./cbk.cloud.serviceProvider/"]
-RUN dotnet restore "./cbk.image.service.member/cbk.cloudUploadImage.service.login.csproj"
+RUN dotnet restore "./cbk.image.service.member/cbk.image.service.member.csproj"
 
 # Copy everything else
 COPY .. .
 
-WORKDIR "/src/cbk.cloudUploadImage.service.login"
+WORKDIR "/src/cbk.image.service.member"
 
 # Copy pem and json files
-COPY ["../cbk.cloudUploadImage.Infrastructure/Files/CertificateFil/*.pem", "./"]
-COPY ["../cbk.cloudUploadImage.Infrastructure/Files/CertificateFil/*.json", "./"]
+COPY ["cbk.image.Infrastructure/Files/CertificateFil/*.pem", "./"]
+COPY ["cbk.image.Infrastructure/Files/CertificateFil/*.json", "./"]
 
-RUN dotnet build "cbk.cloudUploadImage.service.login.csproj" -c Release -o /app/build
+RUN dotnet build "cbk.image.service.member.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "cbk.cloudUploadImage.service.login.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "cbk.image.service.member.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
@@ -35,4 +35,4 @@ COPY --from=publish /app/publish .
 # Set Environment Variable
 ENV GOOGLE_APPLICATION_CREDENTIALS=./affable-cacao-389805-297d12d69696.json
 
-ENTRYPOINT ["dotnet", "cbk.cloudUploadImage.service.login.dll"]
+ENTRYPOINT ["dotnet", "cbk.image.service.member.dll"]
