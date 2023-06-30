@@ -1,4 +1,7 @@
+using cbk.cloud.gcp.serviceProvider.CloudRun.EnviromentConfig;
+using cbk.cloud.gcp.serviceProvider.KMS;
 using cbk.cloudUploadImage.Infrastructure.Config;
+using cbk.cloudUploadImage.Infrastructure.Config.KMSEncryption;
 using cbk.cloudUploadImage.Infrastructure.Database;
 using cbk.cloudUploadImage.Infrastructure.Database.DBConnection;
 using cbk.cloudUploadImage.Infrastructure.Database.DBConnection.Model;
@@ -30,6 +33,10 @@ var connectionSetting = new DBConnectionSetting()
 var connectionString = connectionBuilder.BuildConnectionString(connectionSetting, true);
 builder.Services.AddDbContext<DBContext>(options =>
     options.UseNpgsql(connectionString));
+
+
+builder.Services.AddSingleton<IEncryptionEnvironmentConfig>(provider => new EncryptionEnvironmentConfig(true));
+builder.Services.AddSingleton<IKmsService, GoogleKmsService>();
 
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));

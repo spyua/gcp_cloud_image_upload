@@ -1,4 +1,5 @@
-﻿using Google.Cloud.Kms.V1;
+﻿using cbk.cloud.gcp.serviceProvider.CloudRun.EnviromentConfig;
+using Google.Cloud.Kms.V1;
 using Google.Protobuf;
 using Google.Type;
 
@@ -9,10 +10,19 @@ namespace cbk.cloud.gcp.serviceProvider.KMS
         private readonly KeyManagementServiceClient _client;
         private readonly CryptoKeyVersionName _keyVersionName;
 
+        public GoogleKmsService(IEncryptionEnvironmentConfig environmentConfig)
+        {
+            _client = KeyManagementServiceClient.Create();
+            _keyVersionName = new CryptoKeyVersionName(environmentConfig.ProjectId
+                                                    , environmentConfig.LocationId
+                                                    , environmentConfig.KeyRingId
+                                                    , environmentConfig.KeyId
+                                                    , environmentConfig.KeyVersion);
+
+        }
+
         public GoogleKmsService(string projectId, string locationId, string keyRingId, string keyId, string keyVersion)
         {
-            // projects/affable-cacao-389805/locations/asia-east1/keyRings/cathy-sample-project/cryptoKeys/cathy-sample-project-login-usage/cryptoKeyVersions/1
-            // projects/affable-cacao-389805/locations/asia-east1/keyRings/cathy-sample-project/cryptoKeys/cathy-sample-project-login-usage/cryptoKeyVersions/1
             _client = KeyManagementServiceClient.Create();
             _keyVersionName = new CryptoKeyVersionName(projectId, locationId, keyRingId, keyId, keyVersion);
 
@@ -25,7 +35,5 @@ namespace cbk.cloud.gcp.serviceProvider.KMS
             byte[] signature = result.Mac.ToByteArray();
             return signature;
         }
-
-
     }
 }

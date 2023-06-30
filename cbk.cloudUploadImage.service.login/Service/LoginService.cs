@@ -9,17 +9,20 @@ namespace cbk.cloudUploadImage.service.login.Service
     {
         private readonly IAccountRepository _accountRepository;
         private readonly IJwtService _jwtService;
-    
-        public LoginService(IAccountRepository loginRepository, IJwtService jwtService)
+        private readonly IKmsService _kmsService;
+
+        public LoginService(IAccountRepository loginRepository
+                          , IJwtService jwtService
+                          , IKmsService kmsService)
         {
             _accountRepository = loginRepository;
             _jwtService = jwtService;
+            _kmsService = kmsService;
         }
 
         public async Task<AccountDto> CreateAccount(string userName, string password)
         {    
-            IKmsService kmsService = new GoogleKmsService("affable-cacao-389805", "asia-east1", "cathy-sample-project", "cathy-sample-project-login-usage", "1");
-            var encryptedPassword = kmsService.Encrypt(password);
+            var encryptedPassword = _kmsService.Encrypt(password);
 
             // 先檢查是否已存在相同名稱的帳號
             var existingAccount = await _accountRepository.GetByName(userName);
@@ -41,8 +44,7 @@ namespace cbk.cloudUploadImage.service.login.Service
 
         public async Task<AccountDto> LoginAccount(string userName, string password)
         {
-            IKmsService kmsService = new GoogleKmsService("affable-cacao-389805", "asia-east1", "cathy-sample-project", "cathy-sample-project-login-usage", "1");
-            var encryptedPassword = kmsService.Encrypt(password);
+             var encryptedPassword = _kmsService.Encrypt(password);
 
             var existingAccount = await _accountRepository.GetByName(userName);
             if (existingAccount == null)
