@@ -15,10 +15,6 @@ namespace cbk.cloud.gcp.serviceProvider.KMS
             // projects/affable-cacao-389805/locations/asia-east1/keyRings/cathy-sample-project/cryptoKeys/cathy-sample-project-login-usage/cryptoKeyVersions/1
             _client = KeyManagementServiceClient.Create();
             _keyVersionName = new CryptoKeyVersionName(projectId, locationId, keyRingId, keyId, keyVersion);
-        }
-
-        public void ConnectKeyManagementService()
-        {
 
         }
 

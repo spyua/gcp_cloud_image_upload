@@ -1,9 +1,11 @@
-﻿namespace cbk.cloudUploadImage.Infrastructure.Config.DB
+﻿using cbk.cloud.gcp.serviceProvider.CloudRun.EnviromentConfig;
+
+namespace cbk.cloudUploadImage.Infrastructure.Config.DB
 {
     public class DbEnvironmentConfig : IDbEnvironmentConfig
     {
         private string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-        private string certFolder = "CertificateFile";
+        private string certFolder = "Files\\CertificateFile";
         public string InstanceName { get; private set; }
         public string DatabaseName { get; private set; }
         public string UserName { get; private set; }

@@ -1,4 +1,4 @@
-﻿namespace cbk.cloudUploadImage.Infrastructure.Config.KMSEncryption
+﻿namespace cbk.cloud.gcp.serviceProvider.CloudRun.EnviromentConfig
 {
     public interface IEncryptionEnvironmentConfig
     {

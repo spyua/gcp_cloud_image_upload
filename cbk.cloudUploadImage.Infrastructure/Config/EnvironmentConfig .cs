@@ -1,4 +1,5 @@
-﻿using cbk.cloudUploadImage.Infrastructure.Config.DB;
+﻿using cbk.cloud.gcp.serviceProvider.CloudRun.EnviromentConfig;
+using cbk.cloudUploadImage.Infrastructure.Config.DB;
 
 namespace cbk.cloudUploadImage.Infrastructure.Config
 {

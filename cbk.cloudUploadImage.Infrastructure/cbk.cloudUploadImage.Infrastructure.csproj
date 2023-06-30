@@ -15,17 +15,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CertificateFile\" />
+    <ProjectReference Include="..\cbk.cloud.gcp.serviceProvider\cbk.cloud.gcp.serviceProvider.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="CertificateFile\client-cert.pem">
+    <None Update="Files\CertificateFile\client-cert.pem">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="CertificateFile\client-key.pem">
+    <None Update="Files\CertificateFile\client-key.pem">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="CertificateFile\server-ca.pem">
+    <None Update="Files\CertificateFile\server-ca.pem">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

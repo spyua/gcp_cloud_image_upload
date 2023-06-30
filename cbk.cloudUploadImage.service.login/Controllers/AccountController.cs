@@ -1,13 +1,13 @@
-﻿using cbk.cloudUploadImage.Infrastructure.Security;
-using cbk.cloudUploadImage.service.login.Dto;
+﻿using cbk.cloudUploadImage.service.login.Dto;
 using cbk.cloudUploadImage.service.login.Model;
 using cbk.cloudUploadImage.service.login.Service;
-using JWT.Algorithms;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cbk.cloudUploadImage.service.login.Controllers
 {
+    // 待補版本設計....
+
     [ApiController]
     [Route("[controller]")]
     public class AccountController : ControllerBase
@@ -15,92 +15,79 @@ namespace cbk.cloudUploadImage.service.login.Controllers
         private readonly ILogger<AccountController> _logger;
         private readonly ILoginService _loginService;
 
-        // Testing
-        private readonly JwtHelpers _jwt;
-
-        public AccountController(ILogger<AccountController> logger
-                               , ILoginService loginService
-                               , JwtHelpers jwt)
+        public AccountController(ILogger<AccountController> logger, ILoginService loginService)
         {
             _logger = logger;
             _loginService = loginService;
-            _jwt = jwt;
         }
 
 
-
-        [HttpPost]
+        [HttpPost(nameof(Create))]
         [AllowAnonymous]
-        public async Task<ActionResult<ApiResponse<AccountDto>>> CreateAccount(AccountCreate model)
+        public async Task<ActionResult<ApiResponse<AccountDto>>> Create(AccountCreate model)
         {
             // Invalid (待寫..或後續轉到Middleware)
-
             var account = await _loginService.CreateAccount(model.UserName, model.Password);
-
-            if (account == null)
-                return BadRequest("Account already exists.");
-
             return Ok(new ApiResponse<AccountDto>
             {
                 Message = "Create Account Success",
-                Data = new AccountDto() { Token = account.Token  
-                                        ,UserName = account.UserName
-                                        , Password = account.Password }
+                Data = new AccountDto()
+                {
+                    Token = ""
+                    ,
+                    UserName = account.UserName
+                    ,
+                    Password = account.Password
+                }
             });
         }
 
 
-
-
-        [HttpGet]
-        public async Task<ApiResponse<AccountDto>> Query([FromQuery] AccountCreate query)
+        [HttpPost(nameof(Login))]
+        [AllowAnonymous]
+        public async Task<ActionResult<ApiResponse<AccountDto>>> Login(AccountLogin model)
         {
-            //PaginationList<AccountDto> dto = await _accountSearch.QueryAsync(query);
-            return new ApiResponse<AccountDto>
+            // Invalid (待寫..或後續轉到Middleware)
+            var account = await _loginService.LoginAccount(model.UserName, model.Password);
+            return Ok(new ApiResponse<AccountDto>
             {
-                Message = "Query Success",
-                Data = new AccountDto() { UserName="123",Password="123"}
-            };
+                Message = "Login Account Success",
+                Data = new AccountDto()
+                {
+                    Token = account.Token
+                   ,
+                    UserName = account.UserName
+                   ,
+                    Password = account.Password
+                }
+            });
+
+              
         }
-
-
-        [Authorize] // 使用此標籤確保此 Action 需要授權
+        /*測試用保留
+         
+         [Authorize] // 使用此標籤確保此 Action 需要授權
         [HttpGet("username")]
         public IActionResult GetUsername()
         {
             // 在 Controller 中，User 是一個內建的屬性，用來取得當前用戶的 ClaimsPrincipal
-            var username = User.Identity?.Name;
+            var username = User.Claims.ToList();
 
-            if (username == null)
+            if (username[0].Equals(""))
             {
                 return Unauthorized();
             }
-
-            return Ok(username);
+            var d = username[0].Value;
+            return Ok(d);
         }
 
         [HttpPost("signin")]
         [AllowAnonymous]
         public IActionResult SignIn(AccountCreate login)
         {
-            if (ValidateUser(login))
-            {
-                var token = _jwt.GenerateToken(login.UserName);
-                return Ok(new { token });
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }
-        private bool ValidateUser(AccountCreate login)
-        {
-            // 这里你应该添加验证用户的逻辑
-            return true;
-        }
-
-
-      
-        
+            var token = _jwtService.GenerateToken(login.UserName);
+            return Ok(new { token });
+        }        
+         */
     }
 }

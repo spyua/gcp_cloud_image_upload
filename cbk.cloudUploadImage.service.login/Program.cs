@@ -2,24 +2,20 @@ using cbk.cloudUploadImage.Infrastructure.Config;
 using cbk.cloudUploadImage.Infrastructure.Database;
 using cbk.cloudUploadImage.Infrastructure.Database.DBConnection;
 using cbk.cloudUploadImage.Infrastructure.Database.DBConnection.Model;
-using cbk.cloudUploadImage.Infrastructure.Help.DBConnection;
 using cbk.cloudUploadImage.Infrastructure.Repository;
-using cbk.cloudUploadImage.Infrastructure.Security;
+using cbk.cloudUploadImage.Infrastructure.Security.Jwt;
+using cbk.cloudUploadImage.service.login.Middleware;
 using cbk.cloudUploadImage.service.login.Service;
-using Google.Api;
 using JWT.Algorithms;
 using JWT.Extensions.AspNetCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 var environmentConfig = new EnvironmentConfig(useMock:true);
 
-// Infrstructure Injection Setting
+
 IDBConnectionBuilder connectionBuilder = new NpgsqlConnectionBuilder<DBConnectionSetting>();
 var connectionSetting = new DBConnectionSetting()
 {
@@ -35,12 +31,11 @@ var connectionString = connectionBuilder.BuildConnectionString(connectionSetting
 builder.Services.AddDbContext<DBContext>(options =>
     options.UseNpgsql(connectionString));
 
-// System Config Setting
-builder.Services.Configure<JwtSettingsOptions>(builder.Configuration.GetSection("JwtSettings"));
-builder.Services.AddOptions<JwtSettingsOptions>("JwtSettings");
-builder.Services.AddSingleton<JwtHelpers>();
-builder.Services.AddSingleton<IAlgorithmFactory>(new DelegateAlgorithmFactory(new HMACSHA256Algorithm()));
 
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+builder.Services.AddOptions<JwtSettings>("JwtSettings");
+builder.Services.AddSingleton<IJwtService, JwtService>();
+builder.Services.AddSingleton<IAlgorithmFactory>(new DelegateAlgorithmFactory(new HMACSHA256Algorithm()));
 
 // Add services to the container.
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
@@ -57,11 +52,12 @@ builder.Services.AddAuthentication(options =>
 
 }) .AddJwt(options =>
     {
-        // 這段要抽換....去拿KMS的Key
-        options.Keys = new string[] { builder.Configuration.GetValue<string>("JwtSettings:SignKey") };
+        // 這段要抽換....去拿Security Manager Key
+        options.Keys = new string[] { builder.Configuration.GetValue<string>("JwtSettings:TokenSecret") };
         options.VerifySignature = true;
     });
-/*
+
+/* 保留 Net原生寫法
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -80,7 +76,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 */
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Login API", Version = "v1" });
@@ -112,8 +107,6 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-//builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -146,6 +139,6 @@ app.Use(async (context, next) =>
     }
 });
 app.UseAuthorization();
-
+app.UseMiddleware<ExceptionMiddleware>(); 
 app.MapControllers();
 app.Run();
