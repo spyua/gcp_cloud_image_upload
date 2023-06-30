@@ -9,10 +9,10 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 
 # Copy csproj and restore dependencies
-COPY ["cbk.cloudUploadImage.service.login/*.csproj", "./cbk.cloudUploadImage.service.login/"]
-COPY ["cbk.cloudUploadImage.Infrastructure/*.csproj", "./cbk.cloudUploadImage.Infrastructure/"]
-COPY ["cbk.cloud.gcp.serviceProvider/*.csproj", "./cbk.cloud.gcp.serviceProvider/"]
-RUN dotnet restore "./cbk.cloudUploadImage.service.login/cbk.cloudUploadImage.service.login.csproj"
+COPY ["cbk.image.service.member/*.csproj", "./cbk.image.service.member/"]
+COPY ["cbk.image.Infrastructure/*.csproj", "./cbk.image.Infrastructure/"]
+COPY ["cbk.cloud.serviceProvider/*.csproj", "./cbk.cloud.serviceProvider/"]
+RUN dotnet restore "./cbk.image.service.member/cbk.cloudUploadImage.service.login.csproj"
 
 # Copy everything else
 COPY .. .

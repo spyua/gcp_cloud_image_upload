@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\cbk.cloudUploadImage.Infrastructure\cbk.image.Infrastructure.csproj" />
+    <ProjectReference Include="..\cbk.image.Infrastructure\cbk.image.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
