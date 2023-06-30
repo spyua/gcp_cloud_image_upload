@@ -367,3 +367,6 @@ FodyWeavers.xsd
 /cbk.cloudUploadImage.Infrastructure/CertificateFile/server-ca.pem
 /cbk.cloudUploadImage.Infrastructure/CertificateFile/client-key.pem
 /cbk.cloudUploadImage.Infrastructure/CertificateFile/client-cert.pem
+/cbk.cloudUploadImage.Infrastructure/Files/CertificateFile/server-ca.pem
+/cbk.cloudUploadImage.Infrastructure/Files/CertificateFile/client-key.pem
+/cbk.cloudUploadImage.Infrastructure/Files/CertificateFile/client-cert.pem
