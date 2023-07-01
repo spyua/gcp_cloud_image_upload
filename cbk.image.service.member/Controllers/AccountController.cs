@@ -42,7 +42,7 @@ namespace cbk.image.service.member.Controllers
             });
         }
 
-
+        
         [HttpPost(nameof(Login))]
         [AllowAnonymous]
         public async Task<ActionResult<ApiResponse<AccountDto>>> Login(AccountLogin model)

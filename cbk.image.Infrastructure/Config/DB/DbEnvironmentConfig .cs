@@ -5,7 +5,9 @@ namespace cbk.image.Infrastructure.Config.DB
     public class DbEnvironmentConfig : IDbEnvironmentConfig
     {
         private string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-        private string certFolder = "Files\\CertificateFile";
+        //private string certFolder = "Files\\CertificateFile";
+        private string certFolder = "Files/CertificateFile";
+
         public string InstanceName { get; private set; }
         public string DatabaseName { get; private set; }
         public string UserName { get; private set; }
@@ -18,7 +20,8 @@ namespace cbk.image.Infrastructure.Config.DB
             if (useMock)
             {
                 // Set Mock Data
-                InstanceName = "35.229.242.171";
+                //InstanceName = "35.229.242.171";
+                InstanceName = "172.21.240.3";
                 DatabaseName = "postgres";
                 UserName = "cbk_testing";
                 Password = "cbktesting";

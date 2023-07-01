@@ -17,6 +17,7 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 var environmentConfig = new EnvironmentConfig(useMock:true);
+builder.Configuration["ASPNETCORE_URLS"] = $"http://*:{Environment.GetEnvironmentVariable("PORT") ?? "8080"}";
 
 
 IDBConnectionBuilder connectionBuilder = new NpgsqlConnectionBuilder<DBConnectionSetting>();
@@ -115,15 +116,19 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 var app = builder.Build();
+app.UseSwagger();
+app.UseSwaggerUI();
 
+/*
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+*/
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 // Middleware invaild JWT token setting
 app.UseAuthentication();
 app.Use(async (context, next) =>
