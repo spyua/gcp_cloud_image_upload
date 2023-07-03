@@ -62,7 +62,7 @@ namespace cbk.image.service.member.Service
 
             // 產生Token
             var token = _jwtService.GenerateToken(userName);
-            return new AccountDto() { Token = token, UserName = userName, Password = hashedPassword };
+            return new AccountDto() { Token = token, UserName = userName, Password = "" };
         }
     }
 }

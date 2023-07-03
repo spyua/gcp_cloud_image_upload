@@ -4,6 +4,6 @@ namespace cbk.image.service.upload.Service
 {
     public interface IImageService
     {
-        Task<ImageInformationDto> UploadImage(IFormFile file);
+        Task<ImageInformationDto> UploadImage(string userName,IFormFile file);
     }
 }
