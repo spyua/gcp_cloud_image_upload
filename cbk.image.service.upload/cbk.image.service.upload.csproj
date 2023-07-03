@@ -22,8 +22,4 @@
     <ProjectReference Include="..\cbk.image.Infrastructure\cbk.image.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Dto\" />
-  </ItemGroup>
-
 </Project>
