@@ -26,16 +26,19 @@ namespace cbk.cloud.serviceProvider.Storage
         }
         */
 
-        public async Task<UploadResultDto> UploadFileAsync(string bucketName, string objectName, Stream stream)
+        public async Task<UploadResult> UploadFileAsync(string bucketName, string objectName, Stream stream)
         {
             var result = await _storageClient.UploadObjectAsync(bucketName, objectName, null, stream);
+            var mediaLinkUri = new Uri(result.MediaLink);
+            var fileLinkPath = mediaLinkUri.PathAndQuery.Substring(mediaLinkUri.PathAndQuery.LastIndexOf('/') + 1);
 
-            return new UploadResultDto
+            return new UploadResult
             {
                 Name = result.Name,
                 Bucket = result.Bucket,
                 Size = result.Size,
                 MediaLink = result.MediaLink,
+                FileLinkPath = fileLinkPath,
                 ContentType = result.ContentType,
                 TimeCreated = result.TimeCreated?.ToLocalTime(), // If TimeCreated is DateTimeOffset?
             };

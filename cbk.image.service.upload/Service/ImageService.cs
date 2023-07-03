@@ -24,7 +24,7 @@ namespace cbk.image.service.upload.Service
                 throw new Exception("No file selected or the file is empty.");
 
             var objectName = file.FileName;
-            UploadResultDto uploadedObject = null;
+            UploadResult uploadedObject = null;
             try
             {
                 using (var memoryStream = new MemoryStream())
@@ -39,7 +39,7 @@ namespace cbk.image.service.upload.Service
                         AccountName = userName, // set this to the account name
                         OriginalFileName = file.FileName,
                         FileName = objectName, // this is a guess, update as necessary
-                        FileLinkPath = uploadedObject.MediaLink,
+                        FileLinkPath = uploadedObject.FileLinkPath,
                         Status = true, // assuming the image is successfully uploaded (Exist)
                         CreateTime = DateTime.UtcNow,
                         UpdateTime = DateTime.UtcNow

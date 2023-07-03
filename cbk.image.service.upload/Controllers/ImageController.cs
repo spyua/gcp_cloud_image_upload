@@ -32,7 +32,7 @@ namespace cbk.image.service.upload.Controllers
             }
             var userName = userNameClaim.Value;
             */
-            var imageInformation = await _imageService.UploadImage("", file);
+            var imageInformation = await _imageService.UploadImage("Mario", file);
 
             return Ok(new ApiResponse<ImageInformationDto>
             {
