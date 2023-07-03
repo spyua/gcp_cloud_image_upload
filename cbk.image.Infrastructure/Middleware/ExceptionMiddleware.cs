@@ -1,6 +1,12 @@
-﻿using cbk.image.service.member.Dto;
+﻿using cbk.image.Infrastructure.Models;
+using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace cbk.image.service.member.Middleware
+namespace cbk.image.Infrastructure.Middleware
 {
     public class ExceptionMiddleware
     {

@@ -1,4 +1,4 @@
-﻿using cbk.image.service.member.Dto;
+﻿using cbk.image.Infrastructure.Models;
 using cbk.image.service.member.Model;
 using cbk.image.service.member.Service;
 using Microsoft.AspNetCore.Authorization;
