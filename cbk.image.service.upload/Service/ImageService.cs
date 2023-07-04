@@ -15,9 +15,6 @@ namespace cbk.image.service.upload.Service
             _storageService = storageService;
         }
 
-        // Create image upload service method
-
-        
         public async Task<ImageInformationDto> UploadImage(string userName, IFormFile file)
         {
             if (file == null || file.Length == 0)
@@ -37,24 +34,25 @@ namespace cbk.image.service.upload.Service
                     var newImageInfo = new ImageInformation
                     {
                         AccountName = userName, // set this to the account name
-                        OriginalFileName = file.FileName,
-                        FileName = objectName, // this is a guess, update as necessary
+                        OriginalFileName = objectName,
+                        FileName = uploadedObject.Name, // this is a guess, update as necessary
                         FileLinkPath = uploadedObject.FileLinkPath,
                         Status = true, // assuming the image is successfully uploaded (Exist)
                         CreateTime = DateTime.UtcNow,
                         UpdateTime = DateTime.UtcNow
                     };
 
-                    _imageRepository.Add(newImageInfo);
+                    _imageRepository.Create(newImageInfo);
                     await _imageRepository.SaveChangesAsync();
 
                     var dto = new ImageInformationDto
                     {
                         // Fill DTO properties here
                         // Assume ImageInformationDto has similar properties to ImageInformation
-                        OriginalFileName = newImageInfo.OriginalFileName,
                         FileName = newImageInfo.FileName,
                         FileLinkPath = newImageInfo.FileLinkPath,
+                        MediaLink = uploadedObject.MediaLink,
+                        Size = uploadedObject.Size,
                         CreateTime = newImageInfo.CreateTime,
                         UpdateTime = newImageInfo.UpdateTime
                     };
@@ -71,7 +69,42 @@ namespace cbk.image.service.upload.Service
             }
            
         }
-        
 
+        public async Task DeleteImage(string userName, ImageDelete imageDelete)
+        {
+            var fileName = imageDelete.FileName;
+            var imageInformation = _imageRepository.Read(userName, fileName);
+
+            if (imageInformation == null)
+                throw new Exception("Image not found.");
+
+            await _storageService.DeleteFileAsync("cbk_mario_test_project_image_bucket", imageInformation.FileName);
+            _imageRepository.Delete(userName, fileName);
+            await _imageRepository.SaveChangesAsync();
+        }
+
+        public async Task<List<ImageInformationDto>> ImageInformation(string userName)
+        {
+            var imageInformation = await _imageRepository.ReadAllAsync(userName);
+            var imageInformationDto = new List<ImageInformationDto>();
+
+            foreach (var image in imageInformation)
+            {
+                var dto = new ImageInformationDto
+                {
+                    // Fill DTO properties here
+                    // Assume ImageInformationDto has similar properties to ImageInformation
+                    FileName = image.FileName,
+                    FileLinkPath = image.FileLinkPath,
+                    MediaLink = image.FileLinkPath,
+                    //Size = image.Size,
+                    CreateTime = image.CreateTime,
+                    UpdateTime = image.UpdateTime
+                };
+                imageInformationDto.Add(dto);
+            }
+
+            return imageInformationDto;
+        }
     }
 }

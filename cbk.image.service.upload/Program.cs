@@ -105,7 +105,7 @@ if (app.Environment.IsDevelopment())
 }
 */
 
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.Use(async (context, next) =>
 {
