@@ -18,10 +18,13 @@ namespace cbk.image.Infrastructure.Repository
             _context.ImageInformations.Add(item);
         }
 
-        public ImageInformation? Read(string userName, string fileName)
+        public async Task<ImageInformation> ReadAsync(string userName, string fileName)
         {
-            var imageInformation = _context.ImageInformations.FirstOrDefault(x => x.AccountName == userName && x.FileName == fileName);
-            return imageInformation;
+            var imageInformation = await _context.ImageInformations.Where(x => x.AccountName == userName && x.FileName == fileName).ToListAsync();
+            if(imageInformation == null || imageInformation.Count==0)
+                throw new Exception("Image not found.");
+
+            return imageInformation[0];
         }
 
         public async Task<List<ImageInformation>> ReadAllAsync(string userName)
@@ -39,7 +42,10 @@ namespace cbk.image.Infrastructure.Repository
 
             _context.ImageInformations.Remove(imageInformation);
         }
-
+        public void Update(ImageInformation item)
+        {
+            _context.ImageInformations.Update(item);
+        }
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();

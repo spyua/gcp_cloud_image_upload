@@ -79,7 +79,7 @@ namespace cbk.image.service.upload.Service
         public async Task DeleteImage(string userName, ImageDelete imageDelete)
         {
             var fileName = imageDelete.FileName;
-            var imageInformation = _imageRepository.Read(userName, fileName);
+            var imageInformation = await _imageRepository.ReadAsync(userName, fileName);
 
             if (imageInformation == null)
                 throw new Exception("Image not found.");

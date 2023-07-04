@@ -8,5 +8,7 @@
         Task<UploadResult> UploadFileAsync(string bucketName, string objectName, Stream stream);
 
         Task DeleteFileAsync(string bucketName, string objectName);
+
+        Task<Stream> GetFileAsync(string bucketName, string objectName);
     }
 }

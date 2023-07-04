@@ -35,13 +35,19 @@ namespace cbk.cloud.serviceProvider.Storage
                 TimeCreated = result.TimeCreated?.ToLocalTime(), // If TimeCreated is DateTimeOffset?
             };
         }
-
-
-
+        
         // Delete
         public async Task DeleteFileAsync(string bucketName, string objectName)
         {
             await _storageClient.DeleteObjectAsync(bucketName, objectName);
+        }
+
+        // Get file from bucket
+        public async Task<Stream> GetFileAsync(string bucketName, string objectName)
+        {
+            var stream = new MemoryStream();
+            await _storageClient.DownloadObjectAsync(bucketName, objectName, stream);
+            return stream;
         }
 
     }
