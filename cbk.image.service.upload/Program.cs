@@ -9,14 +9,16 @@ using JWT.Extensions.AspNetCore;
 using Microsoft.OpenApi.Models;
 using Microsoft.IdentityModel.Tokens;
 using cbk.image.Infrastructure.Middleware;
-using cbk.cloud.serviceProvider.KMS;
 using cbk.cloud.serviceProvider.Storage;
 using cbk.image.service.upload.Service;
 using cbk.image.Infrastructure.Repository;
+using cbk.image.Infrastructure.Config.Storage;
 
 var builder = WebApplication.CreateBuilder(args);
 var environmentConfig = new EnvironmentConfig(useMock: true);
 builder.Configuration["ASPNETCORE_URLS"] = $"http://*:{Environment.GetEnvironmentVariable("PORT") ?? "8080"}";
+
+builder.Services.AddSingleton(provider => new StorageEnvironmentConfig(true));
 
 
 IDBConnectionBuilder connectionBuilder = new NpgsqlConnectionBuilder<DBConnectionSetting>();

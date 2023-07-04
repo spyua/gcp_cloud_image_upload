@@ -1,4 +1,5 @@
 ﻿using cbk.cloud.serviceProvider.Storage;
+using cbk.image.Infrastructure.Config.Storage;
 using cbk.image.Infrastructure.Database.Entity;
 using cbk.image.Infrastructure.Repository;
 using cbk.image.service.upload.Dto;
@@ -9,10 +10,14 @@ namespace cbk.image.service.upload.Service
     {
         private IImageRepository _imageRepository;
         private IStorageService _storageService;
-        public ImageService(IImageRepository imageRepository, IStorageService storageService)
+        private StorageEnvironmentConfig _storageEnvironmentConfig;
+        public ImageService(  IImageRepository imageRepository
+                            , IStorageService storageService
+                            , StorageEnvironmentConfig storageEnvironmentConfig)
         {
             _imageRepository = imageRepository;
             _storageService = storageService;
+            _storageEnvironmentConfig = storageEnvironmentConfig;
         }
 
         public async Task<ImageInformationDto> UploadImage(string userName, IFormFile file)
@@ -28,7 +33,7 @@ namespace cbk.image.service.upload.Service
                 {
                     await file.CopyToAsync(memoryStream);
                     memoryStream.Position = 0;
-                    uploadedObject = await _storageService.UploadFileAsync("cbk_mario_test_project_image_bucket", objectName, memoryStream);
+                    uploadedObject = await _storageService.UploadFileAsync(_storageEnvironmentConfig.OriginalImageBucket, objectName, memoryStream);
 
 
                     var newImageInfo = new ImageInformation
@@ -63,7 +68,7 @@ namespace cbk.image.service.upload.Service
             {
                 if (uploadedObject != null)
                 {
-                    await _storageService.DeleteFileAsync("cbk_mario_test_project_image_bucket", uploadedObject.Name);
+                    await _storageService.DeleteFileAsync(_storageEnvironmentConfig.OriginalImageBucket, uploadedObject.Name);
                 }
 
                 throw new Exception("Error uploading image", ex);
@@ -79,7 +84,7 @@ namespace cbk.image.service.upload.Service
             if (imageInformation == null)
                 throw new Exception("Image not found.");
 
-            await _storageService.DeleteFileAsync("cbk_mario_test_project_image_bucket", imageInformation.FileName);
+            await _storageService.DeleteFileAsync(_storageEnvironmentConfig.OriginalImageBucket, imageInformation.FileName);
             _imageRepository.Delete(userName, fileName);
             await _imageRepository.SaveChangesAsync();
         }
