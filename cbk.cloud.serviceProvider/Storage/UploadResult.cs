@@ -4,7 +4,7 @@
     {
         public string Name { get; set; }
         public string Bucket { get; set; }
-        public ulong? Size { get; set; }
+        public ulong Size { get; set; }
         public string MediaLink { get; set; }
 
         public string FileLinkPath { get; set; }

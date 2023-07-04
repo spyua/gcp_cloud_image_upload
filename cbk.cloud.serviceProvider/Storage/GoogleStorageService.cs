@@ -18,14 +18,6 @@ namespace cbk.cloud.serviceProvider.Storage
             return result.MediaLink;
         }
 
-        /*
-        public async Task<string> UploadFileAsync(string bucketName, string objectName, Stream stream)
-        {
-            var result = await _storageClient.UploadObjectAsync(bucketName, objectName, null, stream);
-            return result.MediaLink;
-        }
-        */
-
         public async Task<UploadResult> UploadFileAsync(string bucketName, string objectName, Stream stream)
         {
             var result = await _storageClient.UploadObjectAsync(bucketName, objectName, null, stream);
@@ -36,7 +28,7 @@ namespace cbk.cloud.serviceProvider.Storage
             {
                 Name = result.Name,
                 Bucket = result.Bucket,
-                Size = result.Size,
+                Size = result.Size.GetValueOrDefault(),
                 MediaLink = result.MediaLink,
                 FileLinkPath = fileLinkPath,
                 ContentType = result.ContentType,

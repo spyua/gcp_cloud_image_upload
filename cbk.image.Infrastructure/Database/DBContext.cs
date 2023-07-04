@@ -37,12 +37,12 @@ namespace cbk.image.Infrastructure.Database
 
             modelBuilder.Entity<ImageInformation>()
                 .Property(i => i.OriginalFileName)
-                .HasMaxLength(20)
+                .HasMaxLength(200)
                 .IsRequired();
 
             modelBuilder.Entity<ImageInformation>()
                 .Property(i => i.FileName)
-                .HasMaxLength(20)
+                .HasMaxLength(200)
                 .IsRequired();
 
             modelBuilder.Entity<ImageInformation>()

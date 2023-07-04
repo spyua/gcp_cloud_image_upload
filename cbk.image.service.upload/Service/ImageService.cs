@@ -37,6 +37,7 @@ namespace cbk.image.service.upload.Service
                         OriginalFileName = objectName,
                         FileName = uploadedObject.Name, // this is a guess, update as necessary
                         FileLinkPath = uploadedObject.FileLinkPath,
+                        Size = uploadedObject.Size,
                         Status = true, // assuming the image is successfully uploaded (Exist)
                         CreateTime = DateTime.UtcNow,
                         UpdateTime = DateTime.UtcNow
