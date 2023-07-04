@@ -27,7 +27,8 @@ namespace cbk.image.Infrastructure.Database
                 .IsRequired();
 
             modelBuilder.Entity<ImageInformation>()
-                .HasNoKey();
+              .Property(a => a.Id)
+               .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<ImageInformation>()
                 .Property(i => i.AccountName)

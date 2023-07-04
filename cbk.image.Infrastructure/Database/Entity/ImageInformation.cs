@@ -2,6 +2,7 @@
 {
     public class ImageInformation
     {
+        public int Id { get; set; }
         public string AccountName { get; set; } = string.Empty;
         public string OriginalFileName { get; set; } = string.Empty;
         public string FileName { get; set; } = string.Empty;
