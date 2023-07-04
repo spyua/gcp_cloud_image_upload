@@ -34,6 +34,8 @@ namespace cbk.image.service.compress.Service
                 var compressedImageStream = new MemoryStream();
                 using (var image = Image.Load(originalImage))
                 {
+                    originalImage.Position = 0;
+
                     var encoder = new JpegEncoder()
                     {
                         Quality = 50 // 壓縮品質設定為 50
