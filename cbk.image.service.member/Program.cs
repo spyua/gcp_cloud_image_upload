@@ -35,6 +35,8 @@ else
     builder.Services.AddSingleton(provider => new DBEnvironmentConfigFactory().Create());
 }
 builder.Services.AddSingleton<IEnvironmentConfig, EnvironmentConfig>();
+
+// DB Inject Setting
 builder.Services.AddSingleton(provider =>
 {
 

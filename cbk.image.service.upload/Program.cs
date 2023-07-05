@@ -13,40 +13,59 @@ using cbk.cloud.serviceProvider.Storage;
 using cbk.image.service.upload.Service;
 using cbk.image.Infrastructure.Repository;
 using cbk.image.Infrastructure.Config.Storage;
+using cbk.image.Infrastructure.Config.DB;
+using cbk.image.Infrastructure.Config.KMSEncryption;
+using cbk.cloud.gcp.serviceProvider.CloudRun.EnviromentConfig;
 
 var builder = WebApplication.CreateBuilder(args);
-var environmentConfig = new EnvironmentConfig(useMock: true);
+
+// Configure the application.
 builder.Configuration["ASPNETCORE_URLS"] = $"http://*:{Environment.GetEnvironmentVariable("PORT") ?? "8080"}";
 
-builder.Services.AddSingleton(provider => new StorageEnvironmentConfig(true));
-
-
-IDBConnectionBuilder connectionBuilder = new NpgsqlConnectionBuilder<DBConnectionSetting>();
-var connectionSetting = new DBConnectionSetting()
+// 需設置ASPNETCORE_ENVIRONMENT 環境變數 (你可以設在Dockerfile上，若Cloud Run，則設在Cloud Run上)
+if (builder.Environment.IsDevelopment())
 {
-    InstanceName = environmentConfig.DbConfig.InstanceName,
-    DatabaseName = environmentConfig.DbConfig.DatabaseName,
-    UserName = environmentConfig.DbConfig.UserName,
-    Password = environmentConfig.DbConfig.Password,
-    SeverCertificatePath = environmentConfig.DbConfig.SeverCertificatePath,
-    ClientCertificatePath = environmentConfig.DbConfig.ClientCertificatePath,
-    ClientCertificateKeyPath = environmentConfig.DbConfig.ClientCertificateKeyPath,
-};
-var connectionString = connectionBuilder.BuildConnectionString(connectionSetting, true);
-builder.Services.AddDbContext<DBContext>(options =>
-    options.UseNpgsql(connectionString));
+    builder.Services.AddSingleton(provider => new MockEncryptionConfigFactory().Create());
+    builder.Services.AddSingleton(provider => new MockDBConfigFactory().Create());
+    builder.Services.AddSingleton(provider => new StorageEnvironmentConfig(useMock:true));
+}
+else
+{
+    builder.Services.AddSingleton(provider => new EncryptionEnvironmentConfigFactory().Create());
+    builder.Services.AddSingleton(provider => new DBEnvironmentConfigFactory().Create());
+    builder.Services.AddSingleton(provider => new StorageEnvironmentConfig(useMock:false));
+}
+builder.Services.AddSingleton<IEnvironmentConfig, EnvironmentConfig>();
 
-builder.Services.AddSingleton<IStorageService, GoogleStorageService>();
+// DB Inject Setting
+builder.Services.AddSingleton(provider =>
+{
 
+    var environmentConfig = provider.GetRequiredService<IEnvironmentConfig>();
+    var connectionSetting = new DBConnectionSetting()
+    {
+        InstanceName = environmentConfig.DbConfig.InstanceName,
+        DatabaseName = environmentConfig.DbConfig.DatabaseName,
+        UserName = environmentConfig.DbConfig.UserName,
+        Password = environmentConfig.DbConfig.Password,
+        SeverCertificatePath = environmentConfig.DbConfig.SeverCertificatePath,
+        ClientCertificatePath = environmentConfig.DbConfig.ClientCertificatePath,
+        ClientCertificateKeyPath = environmentConfig.DbConfig.ClientCertificateKeyPath,
+    };
+    return connectionSetting;
+});
+builder.Services.AddDbContext<DBContext>((serviceProvider, options) => {
+    IDBConnectionBuilder connectionBuilder = new NpgsqlConnectionBuilder<DBConnectionSetting>();
+    var connectionSetting = serviceProvider.GetService<DBConnectionSetting>();
+    var connectionString = connectionBuilder.BuildConnectionString(connectionSetting, true);
+    options.UseNpgsql(connectionString);
+});
+
+// JWT Token Inject Setting
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 builder.Services.AddOptions<JwtSettings>("JwtSettings");
 builder.Services.AddSingleton<IJwtService, JwtService>();
 builder.Services.AddSingleton<IAlgorithmFactory>(new DelegateAlgorithmFactory(new HMACSHA256Algorithm()));
-
-builder.Services.AddScoped<IImageRepository, ImageRepository>();
-builder.Services.AddScoped<IImageService, ImageService>();
-builder.Services.AddControllers();
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtAuthenticationDefaults.AuthenticationScheme;
@@ -58,6 +77,13 @@ builder.Services.AddAuthentication(options =>
     options.Keys = new string[] { builder.Configuration.GetValue<string>("JwtSettings:TokenSecret") };
     options.VerifySignature = true;
 });
+
+
+builder.Services.AddSingleton<IStorageService, GoogleStorageService>();
+builder.Services.AddScoped<IImageRepository, ImageRepository>();
+builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -92,6 +118,17 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 var app = builder.Build();
+
+// Middleware Setting
+if (builder.Environment.IsDevelopment())
+{
+    app.Logger.LogInformation("Using development environment settings.");
+}
+else
+{
+    app.Logger.LogInformation("Using production environment settings.");
+}
+
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHttpsRedirection();
