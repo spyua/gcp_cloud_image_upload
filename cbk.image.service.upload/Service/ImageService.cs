@@ -8,13 +8,16 @@ namespace cbk.image.service.upload.Service
 {
     public class ImageService : IImageService
     {
+        private readonly ILogger<ImageService> _logger; 
         private IImageRepository _imageRepository;
         private IStorageService _storageService;
         private StorageEnvironmentConfig _storageEnvironmentConfig;
-        public ImageService(  IImageRepository imageRepository
+        public ImageService(  ILogger<ImageService> logger
+                            , IImageRepository imageRepository
                             , IStorageService storageService
                             , StorageEnvironmentConfig storageEnvironmentConfig)
         {
+            _logger = logger;
             _imageRepository = imageRepository;
             _storageService = storageService;
             _storageEnvironmentConfig = storageEnvironmentConfig;
@@ -22,6 +25,8 @@ namespace cbk.image.service.upload.Service
 
         public async Task<ImageInformationDto> UploadImage(string userName, IFormFile file)
         {
+            _logger.LogInformation("Start image upload for user {userName}: {fileName}", userName, file.FileName);
+
             if (file == null || file.Length == 0)
                 throw new Exception("No file selected or the file is empty.");
 
@@ -78,6 +83,8 @@ namespace cbk.image.service.upload.Service
 
         public async Task DeleteImage(string userName, ImageDelete imageDelete)
         {
+            _logger.LogInformation("Start image deletion for user {userName}: {fileName}", userName, imageDelete.FileName);
+
             var fileName = imageDelete.FileName;
             var imageInformation = await _imageRepository.ReadAsync(userName, fileName);
 
@@ -91,6 +98,8 @@ namespace cbk.image.service.upload.Service
 
         public async Task<List<ImageInformationDto>> ImageInformation(string userName)
         {
+            _logger.LogInformation("Start getting all images for user {userName}", userName);
+
             var imageInformation = await _imageRepository.ReadAllAsync(userName);
             var imageInformationDto = new List<ImageInformationDto>();
 

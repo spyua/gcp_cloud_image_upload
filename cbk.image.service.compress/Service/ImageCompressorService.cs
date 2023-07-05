@@ -1,6 +1,7 @@
 ﻿using cbk.cloud.serviceProvider.Storage;
 using cbk.image.Infrastructure.Config.Storage;
 using cbk.image.Infrastructure.Repository;
+using cbk.image.service.compress.Dto;
 using SixLabors.ImageSharp.Formats.Jpeg;
 
 namespace cbk.image.service.compress.Service
@@ -20,7 +21,7 @@ namespace cbk.image.service.compress.Service
             _storageEnvironmentConfig = storageEnvironmentConfig;
         }
 
-         public async Task CompressImageAsync(string userName, string fileName)
+         public async Task<ImageInformationDto> CompressImageAsync(string fileName, string fileLinkPath)
         {
             var originalImage = await _storageService.GetFileAsync(_storageEnvironmentConfig.OriginalImageBucket, fileName);
 
@@ -45,9 +46,9 @@ namespace cbk.image.service.compress.Service
 
                     // Upload the compressed image to the compressed image bucket
                     compressedImage = await _storageService.UploadFileAsync(_storageEnvironmentConfig.ImageBucket, fileName, compressedImageStream);
-                    
+
                     // Get image information from db
-                    var imageInfo = await _imageRepository.ReadAsync(userName, fileName);
+                    var imageInfo = await _imageRepository.ReadAsync(fileName, fileLinkPath);
 
                     // Update compressedImage data to imageInfo
 
@@ -60,6 +61,13 @@ namespace cbk.image.service.compress.Service
                     // Update imageInfo to db
                     _imageRepository.Update(imageInfo);
                     await _imageRepository.SaveChangesAsync();
+
+                    return new ImageInformationDto()
+                    {
+                        FileName = imageInfo.FileName,
+                        FileLinkPath = imageInfo.FileLinkPath,
+                        Size = imageInfo.Size,
+                    };
                 }
             }
             catch(Exception ex)

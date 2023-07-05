@@ -1,6 +1,7 @@
 ﻿using cbk.image.Infrastructure.Models;
 using cbk.image.service.upload.Dto;
 using cbk.image.service.upload.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cbk.image.service.upload.Controllers
@@ -18,10 +19,14 @@ namespace cbk.image.service.upload.Controllers
         }
 
         [HttpPost(nameof(UploadImage))]
-        //[Authorize]
+        [Authorize]
         public async Task<ActionResult<ApiResponse<ImageInformationDto>>> UploadImage(IFormFile file)
         {
-            var imageInformation = await _imageService.UploadImage("Mario", file);
+            _logger.LogInformation("Start image upload: {fileName}", file.FileName);
+
+            var imageInformation = await _imageService.UploadImage(GetUserName(), file);
+
+            _logger.LogInformation("Image uploaded successfully: {fileName}", file.FileName);
 
             return Ok(new ApiResponse<ImageInformationDto>
             {
@@ -31,9 +36,14 @@ namespace cbk.image.service.upload.Controllers
         }
 
         [HttpDelete(nameof(DeleteImage))]
+        [Authorize]
         public async Task<ActionResult<ApiResponse<object>>> DeleteImage(ImageDelete imageDelete)
         {
-            await _imageService.DeleteImage("Mario", imageDelete);
+            _logger.LogInformation("Start image deletion: {fileName}", imageDelete.FileName);
+
+            await _imageService.DeleteImage(GetUserName(), imageDelete);
+
+            _logger.LogInformation("Image deleted successfully: {fileName}", imageDelete.FileName);
 
             return Ok(new ApiResponse<object>
             {
@@ -42,9 +52,14 @@ namespace cbk.image.service.upload.Controllers
         }
 
         [HttpGet(nameof(GetAllImages))]
+        [Authorize]
         public async Task<ActionResult<ApiResponse<List<ImageInformationDto>>>> GetAllImages()
         {
-            var images = await _imageService.ImageInformation("Mario");
+            _logger.LogInformation("Start getting all images.");
+
+            var images = await _imageService.ImageInformation(GetUserName());
+
+            _logger.LogInformation("Retrieved all images successfully");
 
             return Ok(new ApiResponse<List<ImageInformationDto>>
             {

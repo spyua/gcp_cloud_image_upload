@@ -18,9 +18,9 @@ namespace cbk.image.Infrastructure.Repository
             _context.ImageInformations.Add(item);
         }
 
-        public async Task<ImageInformation> ReadAsync(string userName, string fileName)
+        public async Task<ImageInformation> ReadAsync(string fileName, string fileLinkPath)
         {
-            var imageInformation = await _context.ImageInformations.Where(x => x.AccountName == userName && x.FileName == fileName).ToListAsync();
+            var imageInformation = await _context.ImageInformations.Where(x => x.FileLinkPath == fileLinkPath && x.FileName == fileName).ToListAsync();
             if(imageInformation == null || imageInformation.Count==0)
                 throw new Exception("Image not found.");
 

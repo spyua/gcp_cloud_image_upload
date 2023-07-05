@@ -2,6 +2,7 @@
 {
     public class ImageBase
     {
+
         /// <summary>
         /// 檔案名稱
         /// </summary>
@@ -13,7 +14,16 @@
         public string FileLinkPath { get; set; } = string.Empty;
     }
 
-    public class ImageInformationDto
+    public class ImageInformationCompress : ImageBase
     {
+       
+    }
+
+    public class ImageInformationDto : ImageBase
+    {
+        /// <summary>
+        /// 檔案大小
+        /// </summary>
+        public ulong? Size { get; set; }
     }
 }
