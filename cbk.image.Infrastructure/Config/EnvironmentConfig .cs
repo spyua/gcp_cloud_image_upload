@@ -6,10 +6,15 @@ namespace cbk.image.Infrastructure.Config
 {
     public class EnvironmentConfig : IEnvironmentConfig
     {
-        public IDbEnvironmentConfig DbConfig { get; private set; }
-        public EnvironmentConfig(bool useMock = false)
+        public IDBEnvironmentConfig DbConfig { get; private set; }
+
+        public IEncryptionEnvironmentConfig EncryptionEnvironmentConfig { get; private set; }
+
+        public EnvironmentConfig(IDBEnvironmentConfig dbConfig
+                                , IEncryptionEnvironmentConfig encryptionEnvironmentConfig)
         {
-            DbConfig = new DbEnvironmentConfig(useMock);
+            DbConfig = dbConfig;
+            EncryptionEnvironmentConfig = encryptionEnvironmentConfig;
         }
     }
 }

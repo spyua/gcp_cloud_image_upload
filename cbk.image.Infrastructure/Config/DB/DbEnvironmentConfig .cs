@@ -2,21 +2,21 @@
 
 namespace cbk.image.Infrastructure.Config.DB
 {
-    public class DbEnvironmentConfig : IDbEnvironmentConfig
+    public class DBEnvironmentConfig : IDBEnvironmentConfig
     {
-        private string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        public string BaseDirectory { get { return AppDomain.CurrentDomain.BaseDirectory; } }
         // Wait 抽換
-        private string certFolder = "Files\\CertificateFile";
+        //public string certFolder { get { return "Files\\CertificateFile"; } }
         //private string certFolder = "Files/CertificateFile";
-
-        public string InstanceName { get; private set; }
-        public string DatabaseName { get; private set; }
-        public string UserName { get; private set; }
-        public string Password { get; private set; }
-        public string SeverCertificatePath { get; private set; }
-        public string ClientCertificatePath { get; private set; }
-        public string ClientCertificateKeyPath { get; private set; }
-        public DbEnvironmentConfig(bool useMock = false)
+        public string CertFolder { get { return $"Files{Path.DirectorySeparatorChar}CertificateFile"; } }
+        public string InstanceName { get;  set; }
+        public string DatabaseName { get;  set; }
+        public string UserName { get;  set; }
+        public string Password { get;  set; }
+        public string SeverCertificatePath { get;  set; }
+        public string ClientCertificatePath { get;  set; }
+        public string ClientCertificateKeyPath { get;  set; }
+        public DBEnvironmentConfig(bool useMock = false)
         {
             if (useMock)
             {
@@ -27,9 +27,9 @@ namespace cbk.image.Infrastructure.Config.DB
                 DatabaseName = "postgres";
                 UserName = "cbk_testing";
                 Password = "cbktesting";
-                SeverCertificatePath = Path.Combine(baseDirectory, certFolder, "server-ca.pem");
-                ClientCertificatePath = Path.Combine(baseDirectory, certFolder, "client-cert.pem");
-                ClientCertificateKeyPath = Path.Combine(baseDirectory, certFolder, "client-key.pem");
+                SeverCertificatePath = Path.Combine(BaseDirectory, CertFolder, "server-ca.pem");
+                ClientCertificatePath = Path.Combine(BaseDirectory, CertFolder, "client-cert.pem");
+                ClientCertificateKeyPath = Path.Combine(BaseDirectory, CertFolder, "client-key.pem");
             }
             else
             {
@@ -38,9 +38,9 @@ namespace cbk.image.Infrastructure.Config.DB
                 DatabaseName = Environment.GetEnvironmentVariable("DB_NAME") ?? "";
                 UserName = Environment.GetEnvironmentVariable("DB_USER") ?? "";
                 Password = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "";
-                SeverCertificatePath = Path.Combine(baseDirectory,certFolder,Environment.GetEnvironmentVariable("DB_SERVER_CA") ?? "");
-                ClientCertificatePath = Path.Combine(baseDirectory,certFolder,Environment.GetEnvironmentVariable("DB_CLIENT_CERT") ?? "");
-                ClientCertificateKeyPath = Path.Combine(baseDirectory,certFolder,Environment.GetEnvironmentVariable("DB_CLIENT_KEY") ?? "");
+                SeverCertificatePath = Path.Combine(BaseDirectory,CertFolder,Environment.GetEnvironmentVariable("DB_SERVER_CA") ?? "");
+                ClientCertificatePath = Path.Combine(BaseDirectory,CertFolder,Environment.GetEnvironmentVariable("DB_CLIENT_CERT") ?? "");
+                ClientCertificateKeyPath = Path.Combine(BaseDirectory,CertFolder,Environment.GetEnvironmentVariable("DB_CLIENT_KEY") ?? "");
             }
         }
     }

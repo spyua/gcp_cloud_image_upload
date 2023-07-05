@@ -8,4 +8,10 @@
         string KeyId { get; }
         string KeyVersion { get; }
     }
+
+    // 注入抽換Mock使用
+    public interface IEncryptionEnvironmentConfigFactory
+    {
+        IEncryptionEnvironmentConfig Create();
+    }
 }

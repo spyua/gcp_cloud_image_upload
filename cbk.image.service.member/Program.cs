@@ -1,6 +1,8 @@
+using cbk.cloud.gcp.serviceProvider.CloudRun.EnviromentConfig;
 using cbk.cloud.serviceProvider.CloudRun.EnviromentConfig;
 using cbk.cloud.serviceProvider.KMS;
 using cbk.image.Infrastructure.Config;
+using cbk.image.Infrastructure.Config.DB;
 using cbk.image.Infrastructure.Config.KMSEncryption;
 using cbk.image.Infrastructure.Database;
 using cbk.image.Infrastructure.Database.DBConnection;
@@ -16,72 +18,69 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-var environmentConfig = new EnvironmentConfig(useMock:true);
+
+// Configure the application.
 builder.Configuration["ASPNETCORE_URLS"] = $"http://*:{Environment.GetEnvironmentVariable("PORT") ?? "8080"}";
 
-
-IDBConnectionBuilder connectionBuilder = new NpgsqlConnectionBuilder<DBConnectionSetting>();
-var connectionSetting = new DBConnectionSetting()
+if (builder.Environment.IsDevelopment())
 {
-    InstanceName = environmentConfig.DbConfig.InstanceName,
-    DatabaseName = environmentConfig.DbConfig.DatabaseName,
-    UserName = environmentConfig.DbConfig.UserName,
-    Password = environmentConfig.DbConfig.Password,
-    SeverCertificatePath = environmentConfig.DbConfig.SeverCertificatePath,
-    ClientCertificatePath = environmentConfig.DbConfig.ClientCertificatePath,
-    ClientCertificateKeyPath = environmentConfig.DbConfig.ClientCertificateKeyPath,
-};
-var connectionString = connectionBuilder.BuildConnectionString(connectionSetting, true);
-builder.Services.AddDbContext<DBContext>(options =>
-    options.UseNpgsql(connectionString));
+    builder.Services.AddSingleton(provider => new MockEncryptionConfigFactory().Create());
+    builder.Services.AddSingleton(provider => new MockDBConfigFactory().Create());
+}
+else
+{
+    builder.Services.AddSingleton(provider => new EncryptionEnvironmentConfigFactory().Create());
+    builder.Services.AddSingleton(provider => new DBEnvironmentConfigFactory().Create());
+}
+builder.Services.AddSingleton<IEnvironmentConfig, EnvironmentConfig>();
+builder.Services.AddSingleton(provider =>
+{
+
+    var environmentConfig = provider.GetRequiredService<IEnvironmentConfig>();
+    var connectionSetting = new DBConnectionSetting()
+    {
+        InstanceName = environmentConfig.DbConfig.InstanceName,
+        DatabaseName = environmentConfig.DbConfig.DatabaseName,
+        UserName = environmentConfig.DbConfig.UserName,
+        Password = environmentConfig.DbConfig.Password,
+        SeverCertificatePath = environmentConfig.DbConfig.SeverCertificatePath,
+        ClientCertificatePath = environmentConfig.DbConfig.ClientCertificatePath,
+        ClientCertificateKeyPath = environmentConfig.DbConfig.ClientCertificateKeyPath,
+    };
+    return connectionSetting;
+});
+builder.Services.AddDbContext<DBContext>( (serviceProvider,options) => {
+    IDBConnectionBuilder connectionBuilder = new NpgsqlConnectionBuilder<DBConnectionSetting>();
+    var connectionSetting = serviceProvider.GetService<DBConnectionSetting>();
+    var connectionString = connectionBuilder.BuildConnectionString(connectionSetting, true);
+    options.UseNpgsql(connectionString);
+});
 
 
-builder.Services.AddSingleton<IEncryptionEnvironmentConfig>(provider => new EncryptionEnvironmentConfig(true));
-builder.Services.AddSingleton<IKmsService, GoogleKmsService>();
-
-
+// JWT Token Inject Setting
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 builder.Services.AddOptions<JwtSettings>("JwtSettings");
 builder.Services.AddSingleton<IJwtService, JwtService>();
 builder.Services.AddSingleton<IAlgorithmFactory>(new DelegateAlgorithmFactory(new HMACSHA256Algorithm()));
-
-// Add services to the container.
-builder.Services.AddScoped<IAccountRepository, AccountRepository>();
-builder.Services.AddScoped<ILoginService, LoginService>();
-builder.Services.AddControllers();
-
-
-// Middleware invaild JWT token setting
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtAuthenticationDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtAuthenticationDefaults.AuthenticationScheme;
 
-}) .AddJwt(options =>
-    {
-        // 這段要抽換....去拿Security Manager Key
-        options.Keys = new string[] { builder.Configuration.GetValue<string>("JwtSettings:TokenSecret") };
-        options.VerifySignature = true;
-    });
+}).AddJwt(options =>
+{
+    // 這段要抽換....去拿Security Manager Key
+    options.Keys = new string[] { builder.Configuration.GetValue<string>("JwtSettings:TokenSecret") };
+    options.VerifySignature = true;
+});
 
-/* 保留 Net原生寫法
-var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+// Service Inject
+builder.Services.AddSingleton<IKmsService, GoogleKmsService>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddControllers();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = false, // 如果你的 JWT 包含 "aud" claim，那麼你需要將這個設定為 true
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = jwtSettings["Issuer"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SignKey"]))
-        };
-    });
-*/
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -116,20 +115,25 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 var app = builder.Build();
+
+
+// Middleware Setting
+if (builder.Environment.IsDevelopment())
+{
+    app.Logger.LogInformation("Using development environment settings.");
+}
+else
+{
+    app.Logger.LogInformation("Using production environment settings.");
+}
+
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
-/*
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-*/
-
-// app.UseHttpsRedirection();
-// Middleware invaild JWT token setting
+// HTTPS Redirection
+app.UseHttpsRedirection();
+// JWT Token Middleware
 app.UseAuthentication();
 app.Use(async (context, next) =>
 {

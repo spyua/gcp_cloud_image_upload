@@ -6,12 +6,22 @@ using Microsoft.EntityFrameworkCore;
 using cbk.image.Infrastructure.Database;
 
 var builder = WebApplication.CreateBuilder(args);
-var environmentConfig = new EnvironmentConfig(useMock: true);
+
 
 // «Ý³B²z
 builder.Configuration["ASPNETCORE_URLS"] = $"http://*:{Environment.GetEnvironmentVariable("PORT") ?? "8080"}";
 
 builder.Services.AddSingleton(provider => new StorageEnvironmentConfig(true));
+
+
+
+
+builder.Services.AddSingleton(provider => new En(true));
+
+var environmentConfig = new EnvironmentConfig();
+
+
+
 
 IDBConnectionBuilder connectionBuilder = new NpgsqlConnectionBuilder<DBConnectionSetting>();
 var connectionSetting = new DBConnectionSetting()
