@@ -22,6 +22,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Configure the application.
 builder.Configuration["ASPNETCORE_URLS"] = $"http://*:{Environment.GetEnvironmentVariable("PORT") ?? "8080"}";
 
+
+// 需設置ASPNETCORE_ENVIRONMENT 環境變數 (你可以設在Dockerfile上，若Cloud Run，則設在Cloud Run上)
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddSingleton(provider => new MockEncryptionConfigFactory().Create());
