@@ -2,6 +2,9 @@
 using cbk.image.service.compress.Dto;
 using cbk.image.service.compress.Service;
 using Microsoft.AspNetCore.Mvc;
+using static cbk.cloud.serviceProvider.Eventarc.PubSubModel;
+using System.Text;
+using System.Text.Json;
 
 namespace cbk.image.service.compress.Controllers
 {
@@ -46,6 +49,32 @@ namespace cbk.image.service.compress.Controllers
             });
                
         }
+
+        [HttpPost("/")]
+        public async Task<IActionResult> ReceiveEvent()
+        {
+            using var reader = new StreamReader(Request.Body);
+            var body = await reader.ReadToEndAsync();
+            _logger.LogInformation($"Received message: {body}");
+
+            var pubSubEvent = JsonSerializer.Deserialize<PubSubEvent>(body);
+            var pubSubMessage = pubSubEvent.Message;
+
+            if (pubSubMessage == null)
+            {
+                return BadRequest("Bad request: Invalid Pub/Sub message format");
+            }
+
+            var data = pubSubMessage.Data;
+            _logger.LogInformation($"Data: {data}");
+
+            // Assuming that the data is base64 encoded.
+            var name = Encoding.UTF8.GetString(Convert.FromBase64String(data));
+            _logger.LogInformation($"Extracted name: {name}");
+
+            return Ok($"Hello {name}! Message ID: {pubSubMessage.MessageId}");
+        }
+
 
     }
 }
