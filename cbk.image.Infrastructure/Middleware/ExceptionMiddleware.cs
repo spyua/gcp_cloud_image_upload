@@ -1,5 +1,6 @@
 ﻿using cbk.image.Infrastructure.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,11 @@ namespace cbk.image.Infrastructure.Middleware
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
-        public ExceptionMiddleware(RequestDelegate next)
+        private readonly ILogger<ExceptionMiddleware> _logger;
+        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
         {
             _next = next;
+            _logger = logger;
         }
 
         public async Task InvokeAsync(HttpContext httpContext)
@@ -24,6 +27,7 @@ namespace cbk.image.Infrastructure.Middleware
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An unhandled exception has occurred while executing the request.");
                 await HandleExceptionAsync(httpContext, ex);
             }
         }

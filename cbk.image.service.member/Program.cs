@@ -1,5 +1,4 @@
 using cbk.cloud.gcp.serviceProvider.CloudRun.EnviromentConfig;
-using cbk.cloud.serviceProvider.CloudRun.EnviromentConfig;
 using cbk.cloud.serviceProvider.KMS;
 using cbk.image.Infrastructure.Config;
 using cbk.image.Infrastructure.Config.DB;

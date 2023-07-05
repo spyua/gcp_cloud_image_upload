@@ -26,8 +26,13 @@ namespace cbk.image.service.member.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<ApiResponse<AccountDto>>> Create(AccountCreate model)
         {
+            _logger.LogInformation("Creating account for user: {UserName}", model.UserName);
+            
             // Invalid (待寫..或後續轉到Middleware)
             var account = await _loginService.CreateAccount(model.UserName, model.Password);
+
+            _logger.LogInformation("Account created successfully for user: {UserName}", model.UserName);
+            
             return Ok(new ApiResponse<AccountDto>
             {
                 Message = "Create Account Success",
@@ -48,7 +53,9 @@ namespace cbk.image.service.member.Controllers
         public async Task<ActionResult<ApiResponse<AccountDto>>> Login(AccountLogin model)
         {
             // Invalid (待寫..或後續轉到Middleware)
+            _logger.LogInformation("Attempting to login for user: {UserName}", model.UserName);
             var account = await _loginService.LoginAccount(model.UserName, model.Password);
+            _logger.LogInformation("Login successful for user: {UserName}", model.UserName);
             return Ok(new ApiResponse<AccountDto>
             {
                 Message = "Login Account Success",
