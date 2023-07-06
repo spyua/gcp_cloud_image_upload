@@ -26,7 +26,7 @@ namespace cbk.image.service.compress.Controllers
         [HttpGet(nameof(CompressImage))]
         public async Task<ActionResult<ApiResponse<ImageInformationDto>>> CompressImage([FromQuery] ImageInformationCompress image)
         {
-            var compressImageFile = await _imageCompressorService.CompressImageAsync(fileName:image.FileName, fileLinkPath:image.FileLinkPath);
+            var compressImageFile = await _imageCompressorService.CompressImageAsync(fileName:image.FileName);
 
             return Ok(new ApiResponse<ImageInformationDto>
             {
@@ -61,15 +61,17 @@ namespace cbk.image.service.compress.Controllers
             _logger.LogInformation($"Received message: {body}");
 
             // 反序列化為基礎事件
+            //var eventModel = JsonSerializer.Deserialize<StorageEvent>(body);
             var baseEvent = JsonSerializer.Deserialize<BaseEvent>(body);
 
+            
             if (baseEvent == null)
                 throw new Exception("Received message data error, no 'kind' attributes");
 
             var factory = new EventarcParseBodyFactory<StorageEvent>();
             var eventModel = factory.CreateEventModel(baseEvent.Kind, body);
-
-            var compressImageFile = await _imageCompressorService.CompressImageAsync(fileName: eventModel.Name, fileLinkPath: image.FileLinkPath);
+            
+            var compressImageFile = await _imageCompressorService.CompressImageAsync(fileName: eventModel.Name);
 
             return Ok($"Hello {eventModel.Kind}! Message ID: {eventModel.Id}");
         }

@@ -21,7 +21,7 @@ namespace cbk.image.service.compress.Service
             _storageEnvironmentConfig = storageEnvironmentConfig;
         }
 
-         public async Task<ImageInformationDto> CompressImageAsync(string fileName, string fileLinkPath)
+         public async Task<ImageInformationDto> CompressImageAsync(string fileName)
         {
             var originalImage = await _storageService.GetFileAsync(_storageEnvironmentConfig.OriginalImageBucket, fileName);
 
@@ -48,7 +48,7 @@ namespace cbk.image.service.compress.Service
                     compressedImage = await _storageService.UploadFileAsync(_storageEnvironmentConfig.ImageBucket, fileName, compressedImageStream);
 
                     // Get image information from db
-                    var imageInfo = await _imageRepository.ReadAsync(fileName, fileLinkPath);
+                    var imageInfo = await _imageRepository.ReadAsync(fileName);
 
                     // Update compressedImage data to imageInfo
 

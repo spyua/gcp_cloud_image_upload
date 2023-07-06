@@ -1,55 +1,56 @@
 ﻿using cbk.cloud.serviceProvider.Eventarc.EventModel;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace cbk.cloud.serviceProvider.Eventarc.Model
 {
     // 如果JSON名稱沒大小寫問題，可以不用JsonProperty
     public class StorageEvent : BaseEvent
     {
+      
 
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public string Id { get; set; } = string.Empty;
 
-        [JsonProperty("selfLink")]
+        [JsonPropertyName("selfLink")]
         public string SelfLink { get; set; } = string.Empty;
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; } = string.Empty;
 
-        [JsonProperty("bucket")]
+        [JsonPropertyName("bucket")]
         public string Bucket { get; set; } = string.Empty;
 
-        [JsonProperty("generation")]
+        [JsonPropertyName("generation")]
         public string Generation { get; set; } = string.Empty;
 
-        [JsonProperty("metageneration")]
+        [JsonPropertyName("metageneration")]
         public string Metageneration { get; set; } = string.Empty;
 
-        [JsonProperty("timeCreated")]
+        [JsonPropertyName("timeCreated")]
         public string TimeCreated { get; set; } = string.Empty;
 
-        [JsonProperty("updated")]
+        [JsonPropertyName("updated")]
         public string Updated { get; set; } = string.Empty;
 
-        [JsonProperty("storageClass")]
+        [JsonPropertyName("storageClass")]
         public string StorageClass { get; set; } = string.Empty;
 
-        [JsonProperty("timeStorageClassUpdated")]
+        [JsonPropertyName("timeStorageClassUpdated")]
         public string TimeStorageClassUpdated { get; set; } = string.Empty;
 
-        [JsonProperty("size")]
+        [JsonPropertyName("size")]
         public string Size { get; set; } = string.Empty;
 
-        [JsonProperty("md5Hash")]
+        [JsonPropertyName("md5Hash")]
         public string Md5Hash { get; set; } = string.Empty;
 
-        [JsonProperty("mediaLink")]
+        [JsonPropertyName("mediaLink")]
         public string MediaLink { get; set; } = string.Empty;
 
-        [JsonProperty("crc32c")]
+        [JsonPropertyName("crc32c")]
         public string Crc32c { get; set; } = string.Empty;
 
-        [JsonProperty("etag")]
+        [JsonPropertyName("etag")]
         public string Etag { get; set; } = string.Empty;
     }
 
