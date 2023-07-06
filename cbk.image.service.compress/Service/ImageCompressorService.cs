@@ -45,7 +45,7 @@ namespace cbk.image.service.compress.Service
                     image.Save(compressedImageStream, encoder);
 
                     // Upload the compressed image to the compressed image bucket
-                    compressedImage = await _storageService.UploadFileAsync(_storageEnvironmentConfig.ImageBucket, fileName, compressedImageStream);
+                    compressedImage = await _storageService.UploadFileAsync(_storageEnvironmentConfig.ImageBucket, fileName, "image/jpeg", compressedImageStream);
 
                     // Get image information from db
                     var imageInfo = await _imageRepository.ReadAsync(fileName);
@@ -56,6 +56,7 @@ namespace cbk.image.service.compress.Service
                     imageInfo.FileLinkPath = compressedImage.FileLinkPath;
                     imageInfo.Size = compressedImage.Size;
                     imageInfo.Status = true;
+                    imageInfo.MediaLink = compressedImage.MediaLink;
                     imageInfo.UpdateTime = DateTime.UtcNow;
 
                     // Update imageInfo to db

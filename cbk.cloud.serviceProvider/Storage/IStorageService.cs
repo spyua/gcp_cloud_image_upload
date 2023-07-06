@@ -5,7 +5,7 @@
     {
         Task<string> UploadFileAsync(string bucketName, string objectName, string filePath);
 
-        Task<UploadResult> UploadFileAsync(string bucketName, string objectName, Stream stream);
+        Task<UploadResult> UploadFileAsync(string bucketName, string objectName, string contentType, Stream stream);
 
         Task DeleteFileAsync(string bucketName, string objectName);
 

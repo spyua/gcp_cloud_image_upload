@@ -39,7 +39,7 @@ namespace cbk.image.service.upload.Service
                     var newFIleName = userName + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff");
                     await file.CopyToAsync(memoryStream);
                     memoryStream.Position = 0;
-                    uploadedObject = await _storageService.UploadFileAsync(_storageEnvironmentConfig.OriginalImageBucket, newFIleName, memoryStream);
+                    uploadedObject = await _storageService.UploadFileAsync(_storageEnvironmentConfig.OriginalImageBucket, newFIleName, "image/jpeg", memoryStream);
                     var newImageInfo = new ImageInformation
                     {
                         AccountName = userName, // set this to the account name

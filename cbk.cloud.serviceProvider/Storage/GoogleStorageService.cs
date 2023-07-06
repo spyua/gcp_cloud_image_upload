@@ -18,9 +18,9 @@ namespace cbk.cloud.serviceProvider.Storage
             return result.MediaLink;
         }
 
-        public async Task<UploadResult> UploadFileAsync(string bucketName, string objectName, Stream stream)
+        public async Task<UploadResult> UploadFileAsync(string bucketName, string objectName, string contentType, Stream stream)
         {
-            var result = await _storageClient.UploadObjectAsync(bucketName, objectName, null, stream);
+            var result = await _storageClient.UploadObjectAsync(bucketName, objectName, contentType, stream);
             var mediaLinkUri = new Uri(result.MediaLink);
             var fileLinkPath = mediaLinkUri.PathAndQuery.Substring(mediaLinkUri.PathAndQuery.LastIndexOf('/') + 1);
 
