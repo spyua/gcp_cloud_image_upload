@@ -21,7 +21,7 @@ WORKDIR "/src/cbk.image.service.upload"
 
 # Copy pem and json files
 COPY ["cbk.image.Infrastructure/Files/CertificateFile/*.pem", "./Files/CertificateFile/"]
-COPY ["cbk.image.Infrastructure/Files/CertificateFile/*.json", "./"]
+# COPY ["cbk.image.Infrastructure/Files/CertificateFile/*.json", "./"]
 
 RUN dotnet build "cbk.image.service.upload.csproj" -c Release -o /app/build
 
@@ -33,7 +33,7 @@ WORKDIR /app
 COPY --from=publish /app/publish .
 
 # Set Environment Variable
-ENV GOOGLE_APPLICATION_CREDENTIALS=./affable-cacao-389805-297d12d69696.json
+# ENV GOOGLE_APPLICATION_CREDENTIALS=./affable-cacao-389805-297d12d69696.json
 ENV ASPNETCORE_URLS=http://*:${PORT:-80}
 
 # ENTRYPOINT ["dotnet", "cbk.image.service.upload.dll"]

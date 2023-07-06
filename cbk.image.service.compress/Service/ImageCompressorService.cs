@@ -33,9 +33,9 @@ namespace cbk.image.service.compress.Service
             {
                 // Compress the originalImage
                 var compressedImageStream = new MemoryStream();
+                originalImage.Position = 0;
                 using (var image = Image.Load(originalImage))
                 {
-                    originalImage.Position = 0;
 
                     var encoder = new JpegEncoder()
                     {

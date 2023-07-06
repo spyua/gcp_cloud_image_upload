@@ -30,25 +30,25 @@ namespace cbk.image.service.upload.Service
             if (file == null || file.Length == 0)
                 throw new Exception("No file selected or the file is empty.");
 
-            var objectName = file.FileName;
             UploadResult uploadedObject = null;
             try
             {
+
                 using (var memoryStream = new MemoryStream())
                 {
+                    var newFIleName = userName + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff");
                     await file.CopyToAsync(memoryStream);
                     memoryStream.Position = 0;
-                    uploadedObject = await _storageService.UploadFileAsync(_storageEnvironmentConfig.OriginalImageBucket, objectName, memoryStream);
-
-
+                    uploadedObject = await _storageService.UploadFileAsync(_storageEnvironmentConfig.OriginalImageBucket, newFIleName, memoryStream);
                     var newImageInfo = new ImageInformation
                     {
                         AccountName = userName, // set this to the account name
-                        OriginalFileName = objectName,
-                        FileName = uploadedObject.Name, // this is a guess, update as necessary
+                        OriginalFileName = file.FileName,
+                        FileName = newFIleName,
                         FileLinkPath = uploadedObject.FileLinkPath,
                         Size = uploadedObject.Size,
                         Status = true, // assuming the image is successfully uploaded (Exist)
+                        MediaLink = uploadedObject.MediaLink,
                         CreateTime = DateTime.UtcNow,
                         UpdateTime = DateTime.UtcNow
                     };
@@ -86,7 +86,8 @@ namespace cbk.image.service.upload.Service
             _logger.LogInformation("Start image deletion for user {userName}: {fileName}", userName, imageDelete.FileName);
 
             var fileName = imageDelete.FileName;
-            var imageInformation = await _imageRepository.ReadAsync(userName, fileName);
+
+            var imageInformation = await _imageRepository.ReadAsync(imageDelete.FileName, imageDelete.FileLinkPath);
 
             if (imageInformation == null)
                 throw new Exception("Image not found.");
@@ -111,8 +112,8 @@ namespace cbk.image.service.upload.Service
                     // Assume ImageInformationDto has similar properties to ImageInformation
                     FileName = image.FileName,
                     FileLinkPath = image.FileLinkPath,
-                    MediaLink = image.FileLinkPath,
-                    //Size = image.Size,
+                    MediaLink = image.MediaLink,
+                    Size = image.Size,
                     CreateTime = image.CreateTime,
                     UpdateTime = image.UpdateTime
                 };

@@ -2,9 +2,10 @@
 using cbk.image.service.compress.Dto;
 using cbk.image.service.compress.Service;
 using Microsoft.AspNetCore.Mvc;
-using static cbk.cloud.serviceProvider.Eventarc.PubSubModel;
-using System.Text;
 using System.Text.Json;
+using cbk.cloud.serviceProvider.Eventarc.EventModel;
+using cbk.cloud.serviceProvider.Eventarc.Model;
+using cbk.cloud.serviceProvider.Eventarc;
 
 namespace cbk.image.service.compress.Controllers
 {
@@ -50,6 +51,8 @@ namespace cbk.image.service.compress.Controllers
                
         }
 
+
+        // Eventarc receive
         [HttpPost("/")]
         public async Task<IActionResult> ReceiveEvent()
         {
@@ -57,24 +60,18 @@ namespace cbk.image.service.compress.Controllers
             var body = await reader.ReadToEndAsync();
             _logger.LogInformation($"Received message: {body}");
 
-            var pubSubEvent = JsonSerializer.Deserialize<PubSubEvent>(body);
-            var pubSubMessage = pubSubEvent.Message;
+            // 反序列化為基礎事件
+            var baseEvent = JsonSerializer.Deserialize<BaseEvent>(body);
 
-            if (pubSubMessage == null)
-            {
-                return BadRequest("Bad request: Invalid Pub/Sub message format");
-            }
+            if (baseEvent == null)
+                throw new Exception("Received message data error, no 'kind' attributes");
 
-            var data = pubSubMessage.Data;
-            _logger.LogInformation($"Data: {data}");
+            var factory = new EventarcParseBodyFactory<StorageEvent>();
+            var eventModel = factory.CreateEventModel(baseEvent.Kind, body);
 
-            // Assuming that the data is base64 encoded.
-            var name = Encoding.UTF8.GetString(Convert.FromBase64String(data));
-            _logger.LogInformation($"Extracted name: {name}");
+            var compressImageFile = await _imageCompressorService.CompressImageAsync(fileName: eventModel.Name, fileLinkPath: image.FileLinkPath);
 
-            return Ok($"Hello {name}! Message ID: {pubSubMessage.MessageId}");
+            return Ok($"Hello {eventModel.Kind}! Message ID: {eventModel.Id}");
         }
-
-
     }
 }

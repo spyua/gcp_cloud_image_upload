@@ -49,6 +49,11 @@ namespace cbk.image.Infrastructure.Database
                 .Property(i => i.FileLinkPath)
                 .HasMaxLength(200)
                 .IsRequired();
+
+            modelBuilder.Entity<ImageInformation>()
+               .Property(i => i.MediaLink)
+               .HasMaxLength(1000)
+               .IsRequired();
         }
     }
 }

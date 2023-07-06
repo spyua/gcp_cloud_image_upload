@@ -9,6 +9,7 @@
         public string FileLinkPath { get; set; } = string.Empty;
         public ulong Size { get; set; }
         public bool Status { get; set; }
+        public string MediaLink { get; set; } = string.Empty;
         public DateTime CreateTime { get; set; }
         public DateTime UpdateTime { get; set; }
     }

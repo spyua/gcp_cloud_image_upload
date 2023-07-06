@@ -19,7 +19,7 @@ namespace cbk.image.service.upload.Controllers
         }
 
         [HttpPost(nameof(UploadImage))]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<ApiResponse<ImageInformationDto>>> UploadImage(IFormFile file)
         {
             _logger.LogInformation("Start image upload: {fileName}", file.FileName);
@@ -36,7 +36,7 @@ namespace cbk.image.service.upload.Controllers
         }
 
         [HttpDelete(nameof(DeleteImage))]
-        [Authorize]
+       // [Authorize]
         public async Task<ActionResult<ApiResponse<object>>> DeleteImage(ImageDelete imageDelete)
         {
             _logger.LogInformation("Start image deletion: {fileName}", imageDelete.FileName);
@@ -52,7 +52,7 @@ namespace cbk.image.service.upload.Controllers
         }
 
         [HttpGet(nameof(GetAllImages))]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<ApiResponse<List<ImageInformationDto>>>> GetAllImages()
         {
             _logger.LogInformation("Start getting all images.");
@@ -70,6 +70,7 @@ namespace cbk.image.service.upload.Controllers
 
         private string GetUserName()
         {
+            return "Mario";
             var userNameClaim = User.Claims.FirstOrDefault(c => c.Type == "nameid");
             if (userNameClaim == null)
             {
