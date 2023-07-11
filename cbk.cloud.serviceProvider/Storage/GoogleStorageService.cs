@@ -11,6 +11,21 @@ namespace cbk.cloud.serviceProvider.Storage
             _storageClient = StorageClient.Create();
         }
 
+        public string GenerateSignedUrl(string bucketName, string objectName)
+        {
+            // path to your service account credentials json file
+            string jsonPath = "path/to/your-service-account-file.json";
+
+            UrlSigner urlSigner = UrlSigner.FromServiceAccountPath(jsonPath);
+
+            // Define the duration that the signed URL should remain usable.
+            TimeSpan duration = TimeSpan.FromMinutes(10);
+
+            string url = urlSigner.Sign(bucketName, objectName, duration, HttpMethod.Get);
+
+            return url;
+        }
+
         public async Task<string> UploadFileAsync(string bucketName, string objectName, string filePath)
         {
             using var f = File.OpenRead(filePath);

@@ -135,7 +135,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 // HTTPS Redirection
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 // JWT Token Middleware
 app.UseAuthentication();
 app.Use(async (context, next) =>
