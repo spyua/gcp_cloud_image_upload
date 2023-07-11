@@ -1,4 +1,5 @@
 ﻿using cbk.cloud.serviceProvider.Storage;
+using cbk.image.Infrastructure.Config.IAM;
 using cbk.image.Infrastructure.Config.Storage;
 using cbk.image.Infrastructure.Database.Entity;
 using cbk.image.Infrastructure.Repository;
@@ -12,15 +13,18 @@ namespace cbk.image.service.upload.Service
         private IImageRepository _imageRepository;
         private IStorageService _storageService;
         private StorageEnvironmentConfig _storageEnvironmentConfig;
+        private AccountServiceCredentialConfig _accountServiceCredentialConfig;
         public ImageService(  ILogger<ImageService> logger
                             , IImageRepository imageRepository
                             , IStorageService storageService
-                            , StorageEnvironmentConfig storageEnvironmentConfig)
+                            , StorageEnvironmentConfig storageEnvironmentConfig
+                            , AccountServiceCredentialConfig accountServiceCredentialConfig)
         {
             _logger = logger;
             _imageRepository = imageRepository;
             _storageService = storageService;
             _storageEnvironmentConfig = storageEnvironmentConfig;
+            _accountServiceCredentialConfig = accountServiceCredentialConfig;
         }
 
         public async Task<ImageInformationDto> UploadImage(string userName, IFormFile file)
@@ -92,7 +96,7 @@ namespace cbk.image.service.upload.Service
             if (imageInformation == null)
                 throw new Exception("Image not found.");
 
-            await _storageService.DeleteFileAsync(_storageEnvironmentConfig.OriginalImageBucket, imageInformation.FileName);
+            await _storageService.DeleteFileAsync(_storageEnvironmentConfig.ImageBucket, imageInformation.FileName);
             _imageRepository.Delete(userName, fileName);
             await _imageRepository.SaveChangesAsync();
         }
@@ -106,13 +110,18 @@ namespace cbk.image.service.upload.Service
 
             foreach (var image in imageInformation)
             {
+                var mediaLink = await _storageService.GenerateSignedUrl(_accountServiceCredentialConfig.CredentialFilePath
+                                                                         , _storageEnvironmentConfig.ImageBucket
+                                                                         , image.FileName);
+
                 var dto = new ImageInformationDto
                 {
                     // Fill DTO properties here
                     // Assume ImageInformationDto has similar properties to ImageInformation
                     FileName = image.FileName,
+                    OriginalFileName = image.OriginalFileName,
                     FileLinkPath = image.FileLinkPath,
-                    MediaLink = image.MediaLink,
+                    MediaLink = mediaLink,
                     Size = image.Size,
                     CreateTime = image.CreateTime,
                     UpdateTime = image.UpdateTime

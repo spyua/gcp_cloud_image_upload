@@ -16,6 +16,7 @@ using cbk.image.Infrastructure.Config.Storage;
 using cbk.image.Infrastructure.Config.DB;
 using cbk.image.Infrastructure.Config.KMSEncryption;
 using cbk.cloud.gcp.serviceProvider.CloudRun.EnviromentConfig;
+using cbk.image.Infrastructure.Config.IAM;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,12 +29,15 @@ if (builder.Environment.IsDevelopment())
     builder.Services.AddSingleton(provider => new MockEncryptionConfigFactory().Create());
     builder.Services.AddSingleton(provider => new MockDBConfigFactory().Create());
     builder.Services.AddSingleton(provider => new StorageEnvironmentConfig(useMock:true));
+    builder.Services.AddSingleton(provider => new AccountServiceCredentialConfig(useMock: true));
+
 }
 else
 {
     builder.Services.AddSingleton(provider => new EncryptionEnvironmentConfigFactory().Create());
     builder.Services.AddSingleton(provider => new DBEnvironmentConfigFactory().Create());
     builder.Services.AddSingleton(provider => new StorageEnvironmentConfig(useMock:false));
+    builder.Services.AddSingleton(provider => new AccountServiceCredentialConfig(useMock: false));
 }
 builder.Services.AddSingleton<IEnvironmentConfig, EnvironmentConfig>();
 

@@ -10,5 +10,7 @@
         Task DeleteFileAsync(string bucketName, string objectName);
 
         Task<Stream> GetFileAsync(string bucketName, string objectName);
+
+        Task<string> GenerateSignedUrl(string credentialFilePath, string bucketName, string objectName);
     }
 }

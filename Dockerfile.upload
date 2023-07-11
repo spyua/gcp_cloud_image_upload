@@ -21,7 +21,7 @@ WORKDIR "/src/cbk.image.service.upload"
 
 # Copy pem and json files
 COPY ["cbk.image.Infrastructure/Files/CertificateFile/*.pem", "./Files/CertificateFile/"]
-# COPY ["cbk.image.Infrastructure/Files/CertificateFile/*.json", "./"]
+# COPY ["cbk.image.Infrastructure/Files/CertificateFile/*.json", "./Files/CertificateFile/"]
 
 RUN dotnet build "cbk.image.service.upload.csproj" -c Release -o /app/build
 

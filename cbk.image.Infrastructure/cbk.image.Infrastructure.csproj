@@ -19,6 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Files\CertificateFile\affable-cacao-389805-297d12d69696.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Files\CertificateFile\client-cert.pem">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
