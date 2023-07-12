@@ -371,3 +371,4 @@ FodyWeavers.xsd
 /cbk.cloudUploadImage.Infrastructure/Files/CertificateFile/client-key.pem
 /cbk.cloudUploadImage.Infrastructure/Files/CertificateFile/client-cert.pem
 /cbk.cloudUploadImage.Infrastructure/Files/CertificateFile/affable-cacao-389805-297d12d69696.json
+/.sonarqube/conf
