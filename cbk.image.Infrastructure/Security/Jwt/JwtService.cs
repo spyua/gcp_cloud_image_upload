@@ -10,6 +10,12 @@ namespace cbk.image.Infrastructure.Security.Jwt
     {
         private readonly JwtSettings _jwtSettings;
 
+        public JwtService(JwtSettings jwtSettings)
+        {
+            _jwtSettings = jwtSettings;
+        }
+
+        // 根據appsetting.json設定檔取得JwtSettings
         public JwtService(IOptions<JwtSettings> jwtSettings)
         {
             _jwtSettings = jwtSettings.Value;

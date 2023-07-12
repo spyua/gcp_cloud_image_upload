@@ -1,5 +1,6 @@
 using cbk.cloud.gcp.serviceProvider.CloudRun.EnviromentConfig;
 using cbk.cloud.serviceProvider.KMS;
+using cbk.cloud.serviceProvider.SecretManager;
 using cbk.image.Infrastructure.Config;
 using cbk.image.Infrastructure.Config.DB;
 using cbk.image.Infrastructure.Config.KMSEncryption;
@@ -63,6 +64,9 @@ builder.Services.AddDbContext<DBContext>( (serviceProvider,options) => {
 // JWT Token Inject Setting
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 builder.Services.AddOptions<JwtSettings>("JwtSettings");
+
+
+
 builder.Services.AddSingleton<IJwtService, JwtService>();
 builder.Services.AddSingleton<IAlgorithmFactory>(new DelegateAlgorithmFactory(new HMACSHA256Algorithm()));
 builder.Services.AddAuthentication(options =>
@@ -78,6 +82,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 // Service Inject
+builder.Services.AddSingleton<ISecretManager, GoogleSecretManager>();
 builder.Services.AddSingleton<IKmsService, GoogleKmsService>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<ILoginService, LoginService>();

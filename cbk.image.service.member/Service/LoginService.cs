@@ -2,7 +2,7 @@
 using cbk.image.service.member.Model;
 using cbk.image.Infrastructure.Security.Jwt;
 using cbk.cloud.serviceProvider.KMS;
-using cbk.image.service.member.Controllers;
+using cbk.cloud.serviceProvider.SecretManager;
 
 namespace cbk.image.service.member.Service
 {
@@ -12,16 +12,19 @@ namespace cbk.image.service.member.Service
         private readonly IAccountRepository _accountRepository;
         private readonly IJwtService _jwtService;
         private readonly IKmsService _kmsService;
+        private readonly ISecretManager _secretManager;
 
         public LoginService( ILogger<LoginService> logger
                           , IAccountRepository loginRepository
                           , IJwtService jwtService
-                          , IKmsService kmsService)
+                          , IKmsService kmsService
+                          , ISecretManager secretManager)
         {
             _logger = logger;
             _accountRepository = loginRepository;
             _jwtService = jwtService;
             _kmsService = kmsService;
+            _secretManager = secretManager;
         }
 
         public async Task<AccountDto> CreateAccount(string userName, string password)
@@ -51,6 +54,10 @@ namespace cbk.image.service.member.Service
 
         public async Task<AccountDto> LoginAccount(string userName, string password)
         {
+            // projects/1083093269039/secrets/upload-image-project-token-key/versions/1 enter the secret manager               
+            // 測試
+            var key = _secretManager.AccessSecretVersion("upload-image-project-token-key", "1083093269039", "1");
+
             _logger.LogInformation("Attempting to login for user: {UserName}", userName);
             var encryptedPassword = _kmsService.Encrypt(password);
 
