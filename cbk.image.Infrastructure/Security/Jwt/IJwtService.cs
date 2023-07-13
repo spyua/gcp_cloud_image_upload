@@ -23,6 +23,7 @@
 
     public interface IJwtService
     {
+        JwtSettings JwtSettings { get; }
         string GenerateToken(string username);
 
         TokenDetail GenerateTokenDetail(string username);

@@ -7,11 +7,11 @@ namespace cbk.image.Infrastructure.Security.Jwt
 {
     public class JwtService : IJwtService
     {
-        private readonly JwtSettings _jwtSettings;
+        public JwtSettings JwtSettings { get; private set; }
 
         public JwtService(JwtSettings jwtSettings)
         {
-            _jwtSettings = jwtSettings;
+            JwtSettings = jwtSettings;
         }
 
         public virtual string GenerateToken(string username)
@@ -50,13 +50,13 @@ namespace cbk.image.Infrastructure.Security.Jwt
                 new Claim(ClaimTypes.NameIdentifier, username),
                 new Claim(JwtRegisteredClaimNames.Jti, jti),
             };
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.TokenSecret));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSettings.TokenSecret));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Issuer = _jwtSettings.Issuer,
+                Issuer = JwtSettings.Issuer,
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(_jwtSettings.ExpiredDay),
+                Expires = DateTime.Now.AddDays(JwtSettings.ExpiredDay),
                 SigningCredentials = creds
             };
             return (jti, tokenDescriptor);

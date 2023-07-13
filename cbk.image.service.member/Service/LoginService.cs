@@ -71,6 +71,8 @@ namespace cbk.image.service.member.Service
             }
 
             // 產生Token
+            // Print token log for debug
+            _logger.LogInformation("Token Key Value:"+_jwtService.JwtSettings.TokenSecret);
             var token = _jwtService.GenerateToken(userName);
             _logger.LogInformation("Login successful and token generated for user: {UserName}", userName);
             return new AccountDto() { Token = token, UserName = userName, Password = "" };

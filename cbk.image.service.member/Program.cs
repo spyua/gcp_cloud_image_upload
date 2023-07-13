@@ -1,7 +1,6 @@
 using cbk.cloud.gcp.serviceProvider.CloudRun.EnviromentConfig;
 using cbk.cloud.serviceProvider.CloudRun.EnviromentConfig;
 using cbk.cloud.serviceProvider.KMS;
-using cbk.cloud.serviceProvider.SecretManager;
 using cbk.image.Infrastructure.Config;
 using cbk.image.Infrastructure.Config.DB;
 using cbk.image.Infrastructure.Config.KMSEncryption;
@@ -79,7 +78,7 @@ builder.Services.AddSingleton(options =>
 
     if(builder.Environment.IsDevelopment())
     {
-        jwtSettings.TokenSecret = builder.Configuration["JwtSettings:TokenSecret"];
+        jwtSettings.TokenSecret = builder.Configuration["JwtSettings:TokenFakeSecret"];
     }
     else
     {
@@ -91,23 +90,18 @@ builder.Services.AddSingleton(options =>
 
     return jwtSettings;
 });
-
-
 builder.Services.AddSingleton<IJwtService, JwtService>();
 builder.Services.AddSingleton<IAlgorithmFactory>(new DelegateAlgorithmFactory(new HMACSHA256Algorithm()));
-
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtAuthenticationDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtAuthenticationDefaults.AuthenticationScheme;
 
 }).AddJwt(options =>
-{
-    // 這段要抽換....去拿Security Manager Key
+{  
     if (builder.Environment.IsDevelopment())
     {
-        options.Keys = new string[] { builder.Configuration.GetValue<string>("JwtSettings:TokenSecret") };
+        options.Keys = new string[] { builder.Configuration.GetValue<string>("JwtSettings:TokenFakeSecret") };
     }
     else
     {

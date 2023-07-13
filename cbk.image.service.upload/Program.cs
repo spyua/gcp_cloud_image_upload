@@ -66,8 +66,26 @@ builder.Services.AddDbContext<DBContext>((serviceProvider, options) => {
 });
 
 // JWT Token Inject Setting
-builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
-builder.Services.AddOptions<JwtSettings>("JwtSettings");
+builder.Services.AddSingleton(options =>
+{
+    var jwtSettings = new JwtSettings();
+    jwtSettings.Issuer = builder.Configuration["JwtSettings:Issuer"];
+    jwtSettings.ExpiredDay = int.Parse(builder.Configuration["JwtSettings:ExpiredDay"]);
+
+    if (builder.Environment.IsDevelopment())
+    {
+        jwtSettings.TokenSecret = builder.Configuration["JwtSettings:TokenFakeSecret"];
+    }
+    else
+    {
+        var tokenSecret = Environment.GetEnvironmentVariable("SECRET_TOKEN_KEY");
+        if (string.IsNullOrEmpty(tokenSecret))
+            throw new Exception("TokenSecret is null or empty, You don't setting the cloud run EnvironmentVariable");
+        jwtSettings.TokenSecret = tokenSecret;
+    }
+
+    return jwtSettings;
+});
 builder.Services.AddSingleton<IJwtService, JwtService>();
 builder.Services.AddSingleton<IAlgorithmFactory>(new DelegateAlgorithmFactory(new HMACSHA256Algorithm()));
 builder.Services.AddAuthentication(options =>
@@ -77,7 +95,17 @@ builder.Services.AddAuthentication(options =>
 
 }).AddJwt(options =>
 {
-    options.Keys = new string[] { builder.Configuration.GetValue<string>("JwtSettings:TokenSecret") };
+    if (builder.Environment.IsDevelopment())
+    {
+        options.Keys = new string[] { builder.Configuration.GetValue<string>("JwtSettings:TokenFakeSecret") };
+    }
+    else
+    {
+        var tokenSecret = Environment.GetEnvironmentVariable("SECRET_TOKEN_KEY");
+        if (string.IsNullOrEmpty(tokenSecret))
+            throw new Exception("TokenSecret is null or empty, You don't setting the cloud run EnvironmentVariable");
+        options.Keys = new string[] { tokenSecret };
+    }
     options.VerifySignature = true;
 });
 
