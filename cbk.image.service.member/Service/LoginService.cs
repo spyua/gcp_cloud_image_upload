@@ -12,13 +12,13 @@ namespace cbk.image.service.member.Service
         private readonly IAccountRepository _accountRepository;
         private readonly IJwtService _jwtService;
         private readonly IKmsService _kmsService;
-        private readonly ISecretManager _secretManager;
+        private readonly ISecretManagerService _secretManager;
 
         public LoginService( ILogger<LoginService> logger
                           , IAccountRepository loginRepository
                           , IJwtService jwtService
                           , IKmsService kmsService
-                          , ISecretManager secretManager)
+                          , ISecretManagerService secretManager)
         {
             _logger = logger;
             _accountRepository = loginRepository;

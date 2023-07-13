@@ -77,7 +77,6 @@ builder.Services.AddAuthentication(options =>
 
 }).AddJwt(options =>
 {
-    // 這段要抽換....去拿Security Manager Key
     options.Keys = new string[] { builder.Configuration.GetValue<string>("JwtSettings:TokenSecret") };
     options.VerifySignature = true;
 });

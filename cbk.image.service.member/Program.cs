@@ -1,9 +1,11 @@
 using cbk.cloud.gcp.serviceProvider.CloudRun.EnviromentConfig;
+using cbk.cloud.serviceProvider.CloudRun.EnviromentConfig;
 using cbk.cloud.serviceProvider.KMS;
 using cbk.cloud.serviceProvider.SecretManager;
 using cbk.image.Infrastructure.Config;
 using cbk.image.Infrastructure.Config.DB;
 using cbk.image.Infrastructure.Config.KMSEncryption;
+using cbk.image.Infrastructure.Config.SecretManager;
 using cbk.image.Infrastructure.Database;
 using cbk.image.Infrastructure.Database.DBConnection;
 using cbk.image.Infrastructure.Database.DBConnection.Model;
@@ -28,11 +30,14 @@ if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddSingleton(provider => new MockEncryptionConfigFactory().Create());
     builder.Services.AddSingleton(provider => new MockDBConfigFactory().Create());
+    builder.Services.AddSingleton<ISecretManagerConfig>(provider => new SecretManagerConfig(useMock: true)); 
 }
 else
+
 {
     builder.Services.AddSingleton(provider => new EncryptionEnvironmentConfigFactory().Create());
     builder.Services.AddSingleton(provider => new DBEnvironmentConfigFactory().Create());
+    builder.Services.AddSingleton<ISecretManagerConfig, SecretManagerConfig>();
 }
 builder.Services.AddSingleton<IEnvironmentConfig, EnvironmentConfig>();
 
@@ -56,19 +61,43 @@ builder.Services.AddSingleton(provider =>
 builder.Services.AddDbContext<DBContext>( (serviceProvider,options) => {
     IDBConnectionBuilder connectionBuilder = new NpgsqlConnectionBuilder<DBConnectionSetting>();
     var connectionSetting = serviceProvider.GetService<DBConnectionSetting>();
+
+    if (connectionSetting == null)
+        throw new Exception("DI Setting Fail, DBConnectionSetting is null");
+    
     var connectionString = connectionBuilder.BuildConnectionString(connectionSetting, true);
     options.UseNpgsql(connectionString);
 });
 
 
-// JWT Token Inject Setting
-builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
-builder.Services.AddOptions<JwtSettings>("JwtSettings");
+// JWT Token Inject Setting\
+builder.Services.AddSingleton<ISecretManagerService, GoogleSecretService>();
+builder.Services.AddSingleton(options =>
+{
+    var jwtSettings = new JwtSettings();
+    jwtSettings.Issuer = builder.Configuration["JwtSettings:Issuer"];
+    jwtSettings.ExpiredDay = int.Parse(builder.Configuration["JwtSettings:ExpiredDay"]);
 
+    if(builder.Environment.IsDevelopment())
+    {
+        jwtSettings.TokenSecret = builder.Configuration["JwtSettings:TokenSecret"];
+    }
+    else
+    {
+        var tokenSecret = Environment.GetEnvironmentVariable("SECRET_TOKEN_KEY");
+        if(string.IsNullOrEmpty(tokenSecret))
+            throw new Exception("TokenSecret is null or empty, You don't setting the cloud run EnvironmentVariable");
+        jwtSettings.TokenSecret = tokenSecret;
+    }
+
+    return jwtSettings;
+});
 
 
 builder.Services.AddSingleton<IJwtService, JwtService>();
 builder.Services.AddSingleton<IAlgorithmFactory>(new DelegateAlgorithmFactory(new HMACSHA256Algorithm()));
+
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtAuthenticationDefaults.AuthenticationScheme;
@@ -77,12 +106,21 @@ builder.Services.AddAuthentication(options =>
 }).AddJwt(options =>
 {
     // 這段要抽換....去拿Security Manager Key
-    options.Keys = new string[] { builder.Configuration.GetValue<string>("JwtSettings:TokenSecret") };
+    if (builder.Environment.IsDevelopment())
+    {
+        options.Keys = new string[] { builder.Configuration.GetValue<string>("JwtSettings:TokenSecret") };
+    }
+    else
+    {
+        var tokenSecret = Environment.GetEnvironmentVariable("SECRET_TOKEN_KEY");
+        if (string.IsNullOrEmpty(tokenSecret))
+            throw new Exception("TokenSecret is null or empty, You don't setting the cloud run EnvironmentVariable");
+        options.Keys = new string[] { tokenSecret };
+    }  
     options.VerifySignature = true;
 });
 
 // Service Inject
-builder.Services.AddSingleton<ISecretManager, GoogleSecretManager>();
 builder.Services.AddSingleton<IKmsService, GoogleKmsService>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<ILoginService, LoginService>();
@@ -123,7 +161,6 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 var app = builder.Build();
-
 
 // Middleware Setting
 if (builder.Environment.IsDevelopment())

@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -13,12 +12,6 @@ namespace cbk.image.Infrastructure.Security.Jwt
         public JwtService(JwtSettings jwtSettings)
         {
             _jwtSettings = jwtSettings;
-        }
-
-        // 根據appsetting.json設定檔取得JwtSettings
-        public JwtService(IOptions<JwtSettings> jwtSettings)
-        {
-            _jwtSettings = jwtSettings.Value;
         }
 
         public virtual string GenerateToken(string username)

@@ -1,10 +1,23 @@
-﻿using Google.Cloud.SecretManager.V1;
+﻿using cbk.cloud.serviceProvider.CloudRun.EnviromentConfig;
+using Google.Cloud.SecretManager.V1;
 
 namespace cbk.cloud.serviceProvider.SecretManager
 {
-    public class GoogleSecretManager : ISecretManager
+
+    public class GoogleSecretService : ISecretManagerService
     {
-        
+        public ISecretManagerConfig _secretManagerConfig { get; private set; }
+
+        public GoogleSecretService(ISecretManagerConfig secretManagerConfig)
+        {
+            _secretManagerConfig = secretManagerConfig;
+        }
+
+        public string AccessSecretVersion()
+        {
+              return AccessSecretVersion(_secretManagerConfig.SecretId, _secretManagerConfig.ProjectId, _secretManagerConfig.VersionId);
+        }
+
         public string AccessSecretVersion(string secretId, string projectId, string versionId)
         {
             // Create the client.
