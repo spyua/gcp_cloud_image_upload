@@ -15,8 +15,7 @@
             }
             else
             {
-                // Get environment variable or set to default
-                CredentialFilePath = Path.Combine(BaseDirectory, CertFolder, Environment.GetEnvironmentVariable("ACCOUNT_SERVICE") ?? "");
+                CredentialFilePath = Environment.GetEnvironmentVariable("ACCOUNT_SERVICE") ?? "";
             }
         }
     }
