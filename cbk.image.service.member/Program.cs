@@ -70,8 +70,7 @@ builder.Services.AddDbContext<DBContext>( (serviceProvider,options) => {
 });
 
 
-// JWT Token Inject Setting\
-builder.Services.AddSingleton<ISecretManagerService, GoogleSecretService>();
+// JWT Token Inject Setting
 builder.Services.AddSingleton(options =>
 {
     var jwtSettings = new JwtSettings();
