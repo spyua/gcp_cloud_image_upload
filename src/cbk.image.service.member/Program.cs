@@ -1,10 +1,10 @@
 using cbk.cloud.gcp.serviceProvider.CloudRun.EnviromentConfig;
 using cbk.cloud.serviceProvider.CloudRun.EnviromentConfig;
 using cbk.cloud.serviceProvider.KMS;
-using cbk.image.Infrastructure.Config;
-using cbk.image.Infrastructure.Config.DB;
-using cbk.image.Infrastructure.Config.KMSEncryption;
-using cbk.image.Infrastructure.Config.SecretManager;
+using cbk.image.Infrastructure.CloudRunEnviroment;
+using cbk.image.Infrastructure.CloudRunEnviroment.DB;
+using cbk.image.Infrastructure.CloudRunEnviroment.KMSEncryption;
+using cbk.image.Infrastructure.CloudRunEnviroment.SecretManager;
 using cbk.image.Infrastructure.Database;
 using cbk.image.Infrastructure.Database.DBConnection;
 using cbk.image.Infrastructure.Database.DBConnection.Model;

@@ -1,8 +1,8 @@
 ﻿using cbk.cloud.gcp.serviceProvider.CloudRun.EnviromentConfig;
 using cbk.cloud.serviceProvider.CloudRun.EnviromentConfig;
-using cbk.image.Infrastructure.Config.DB;
+using cbk.image.Infrastructure.CloudRunEnviroment.DB;
 
-namespace cbk.image.Infrastructure.Config
+namespace cbk.image.Infrastructure.CloudRunEnviroment
 {
     public class EnvironmentConfig : IEnvironmentConfig
     {

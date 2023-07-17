@@ -1,6 +1,6 @@
 ﻿using cbk.cloud.serviceProvider.CloudRun.EnviromentConfig;
 
-namespace cbk.image.Infrastructure.Config.SecretManager
+namespace cbk.image.Infrastructure.CloudRunEnviroment.SecretManager
 {
     public class SecretManagerConfig : ISecretManagerConfig
     {

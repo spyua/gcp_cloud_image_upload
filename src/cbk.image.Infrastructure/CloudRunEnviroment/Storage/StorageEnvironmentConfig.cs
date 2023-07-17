@@ -1,4 +1,4 @@
-﻿namespace cbk.image.Infrastructure.Config.Storage
+﻿namespace cbk.image.Infrastructure.CloudRunEnviroment.Storage
 {
     public class StorageEnvironmentConfig
     {

@@ -1,4 +1,4 @@
-﻿namespace cbk.image.Infrastructure.Config.IAM
+﻿namespace cbk.image.Infrastructure.CloudRunEnviroment.IAM
 {
     public class AccountServiceCredentialConfig
     {

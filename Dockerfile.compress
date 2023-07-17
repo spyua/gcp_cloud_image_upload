@@ -1,41 +1,43 @@
-# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+ARG APP_VERSION=2.0.1
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
-WORKDIR /app
-EXPOSE 80
-EXPOSE 443
-
+# https://hub.docker.com/_/microsoft-dotnet
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /src
+LABEL stage=intermediate
+ARG APP_VERSION
 
-# Copy csproj and restore dependencies
-COPY ["cbk.image.service.compress/*.csproj", "./cbk.image.service.compress/"]
-COPY ["cbk.image.Infrastructure/*.csproj", "./cbk.image.Infrastructure/"]
-COPY ["cbk.cloud.serviceProvider/*.csproj", "./cbk.cloud.serviceProvider/"]
-RUN dotnet restore "./cbk.image.service.compress/cbk.image.service.compress.csproj"
+WORKDIR /source
 
-# Copy everything else
-COPY .. .
+# copy csproj and restore as distinct layers
+COPY *.sln .
+COPY src/cbk.image.service.compress/*.csproj ./src/cbk.image.service.compress/
+COPY src/cbk.image.Infrastructure/*.csproj ./src/cbk.image.Infrastructure/
+COPY src/cbk.cloud.serviceProvider/*.csproj ./src/cbk.cloud.serviceProvider/
 
-WORKDIR "/src/cbk.image.service.compress"
+# execute nuget dll restore, avoid testing
+RUN dotnet restore "src/cbk.image.service.compress/cbk.image.service.compress.csproj"
 
-# Copy pem and json files
-# COPY ["cbk.image.Infrastructure/Files/CertificateFile/*.pem", "./Files/CertificateFile/"]
-# COPY ["cbk.image.Infrastructure/Files/CertificateFile/*.json", "./"]
+# can't not include folder obj/**, use the .dockerignore or it will cause error
+COPY src/cbk.image.service.compress/. ./src/cbk.image.service.compress/
+COPY src/cbk.image.Infrastructure/. ./src/cbk.image.Infrastructure/
+COPY src/cbk.cloud.serviceProvider/. ./src/cbk.cloud.serviceProvider/
 
-RUN dotnet build "cbk.image.service.compress.csproj" -c Release -o /app/build
+# -c: Configuration
+# -o: output file
+# --no-restore: no use dotnet restore
+RUN dotnet publish src/cbk.image.service.compress/cbk.image.service.compress.csproj -c release -o /app -p:Version=${APP_VERSION} -p:OpenApiCli=false --no-restore -nowarn:CS8618
 
-FROM build AS publish
-RUN dotnet publish "cbk.image.service.compress.csproj" -c Release -o /app/publish /p:UseAppHost=false
+# final stage/image
+FROM mcr.microsoft.com/dotnet/aspnet:6.0
+ARG APP_VERSION
+ARG PORT=7001
 
-FROM base AS final
+ENV ASPNETCORE_URLS=http://*:${PORT}
+LABEL AppVersion=${APP_VERSION}
+
+
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=build /app ./
 
-# Set Environment Variable
-# ENV GOOGLE_APPLICATION_CREDENTIALS=./affable-cacao-389805-297d12d69696.json
 ENV ASPNETCORE_URLS=http://*:${PORT:-80}
-
-# ENTRYPOINT ["dotnet", "cbk.image.service.compress.dll"]
 ENTRYPOINT ["sh", "-c", "dotnet cbk.image.service.compress.dll --urls=http://*:${PORT:-80}"]
 

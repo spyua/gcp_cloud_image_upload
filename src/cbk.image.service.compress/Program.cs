@@ -1,12 +1,12 @@
-using cbk.image.Infrastructure.Config;
-using cbk.image.Infrastructure.Config.Storage;
+using cbk.image.Infrastructure.CloudRunEnviroment;
+using cbk.image.Infrastructure.CloudRunEnviroment.Storage;
 using cbk.image.Infrastructure.Database.DBConnection.Model;
 using cbk.image.Infrastructure.Database.DBConnection;
 using Microsoft.EntityFrameworkCore;
 using cbk.image.Infrastructure.Database;
 using cbk.cloud.gcp.serviceProvider.CloudRun.EnviromentConfig;
-using cbk.image.Infrastructure.Config.DB;
-using cbk.image.Infrastructure.Config.KMSEncryption;
+using cbk.image.Infrastructure.CloudRunEnviroment.DB;
+using cbk.image.Infrastructure.CloudRunEnviroment.KMSEncryption;
 using cbk.image.Infrastructure.Middleware;
 using cbk.cloud.serviceProvider.Storage;
 using cbk.image.service.compress.Service;

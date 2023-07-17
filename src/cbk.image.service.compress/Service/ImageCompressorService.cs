@@ -1,5 +1,5 @@
 ﻿using cbk.cloud.serviceProvider.Storage;
-using cbk.image.Infrastructure.Config.Storage;
+using cbk.image.Infrastructure.CloudRunEnviroment.Storage;
 using cbk.image.Infrastructure.Repository;
 using cbk.image.service.compress.Dto;
 using SixLabors.ImageSharp.Formats.Jpeg;

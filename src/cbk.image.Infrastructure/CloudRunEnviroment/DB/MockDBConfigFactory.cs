@@ -1,6 +1,6 @@
 ﻿using cbk.cloud.serviceProvider.CloudRun.EnviromentConfig;
 
-namespace cbk.image.Infrastructure.Config.DB
+namespace cbk.image.Infrastructure.CloudRunEnviroment.DB
 {
     public class MockDBConfigFactory : IDBEnvironmentConfigFactory
     {
