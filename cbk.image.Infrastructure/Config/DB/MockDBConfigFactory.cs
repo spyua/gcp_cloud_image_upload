@@ -7,7 +7,7 @@ namespace cbk.image.Infrastructure.Config.DB
         public IDBEnvironmentConfig Create()
         {
             var config = new DBEnvironmentConfig();
-            config.InstanceName = "34.80.136.179";
+            config.InstanceName = "";
             config.DatabaseName = "postgres";
             config.UserName = "cbk_testing";
             config.Password = "cbktesting";
