@@ -1,0 +1,51 @@
+name: Deploy to Google Cloud Run
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore cbk.project.cloudUploadImage.sln
+    
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest  # 需要添加這一行    
+    steps:   
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Set up gcloud CLI
+        uses: google-github-actions/setup-gcloud@v0.2.0
+        with:
+            service_account_key: ${{ secrets.GCP_SA_KEY }}
+            project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Deploy to Cloud Run
+        run: |
+            TAG_NAME=${GITHUB_REF#refs/tags/}
+            if [[ "${TAG_NAME}" == "member"* ]]; then
+                YAML_FILE=cloudbuild-member-service.yaml
+            elif [[ "${TAG_NAME}" == "upload"* ]]; then
+                YAML_FILE=cloudbuild-upload-service.yaml
+            elif [[ "${TAG_NAME}" == "compress"* ]]; then
+                YAML_FILE=cloudbuild-compress-service.yaml
+            else
+                echo "No matching service for tag ${TAG_NAME}. Exiting."
+                exit 1
+            fi
+            VERSION=$(echo $TAG_NAME | grep -o '[0-9]\+[.][0-9]\+[.][0-9]\+$')
+            gcloud builds submit --config ${YAML_FILE} --substitutions _VERSION=${VERSION} .
