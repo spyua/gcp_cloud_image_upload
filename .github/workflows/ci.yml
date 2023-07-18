@@ -44,5 +44,5 @@ jobs:
                YAML_FILE=cloudbuild-compress-service.yaml
             else
                YAML_FILE=cloudbuild-member-service.yaml
-        fi
-        gcloud builds submit --config ${YAML_FILE} .
+            fi
+            gcloud builds submit --config ${YAML_FILE} .
