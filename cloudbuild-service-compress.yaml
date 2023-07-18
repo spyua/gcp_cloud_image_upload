@@ -14,3 +14,5 @@ steps:
   - 'asia-east1'
   - '--platform'
   - 'managed'
+options:
+  logging: CLOUD_LOGGING_ONLY  # 指定 Cloud Build 只使用 Cloud Logging 記錄日誌
