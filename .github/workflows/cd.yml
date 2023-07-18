@@ -38,11 +38,11 @@ jobs:
         run: |
             TAG_NAME=${GITHUB_REF#refs/tags/}
             if [[ "${TAG_NAME}" == "member"* ]]; then
-                YAML_FILE=cloudbuild-member-service.yaml
+                YAML_FILE=cloudbuild-service-member.yaml
             elif [[ "${TAG_NAME}" == "upload"* ]]; then
-                YAML_FILE=cloudbuild-upload-service.yaml
+                YAML_FILE=cloudbuild-service-upload.yaml
             elif [[ "${TAG_NAME}" == "compress"* ]]; then
-                YAML_FILE=cloudbuild-compress-service.yaml
+                YAML_FILE=cloudbuild-service-compress.yaml
             else
                 echo "No matching service for tag ${TAG_NAME}. Exiting."
                 exit 1
