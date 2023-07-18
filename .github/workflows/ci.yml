@@ -36,12 +36,13 @@ jobs:
         run: |
             TAG_NAME=${GITHUB_REF#refs/tags/}
             if [[ "${TAG_NAME}" == "member"* ]]; then
-               YAML_FILE=cloudbuild-service-member.yaml
+                YAML_FILE=cloudbuild-member-service.yaml
             elif [[ "${TAG_NAME}" == "upload"* ]]; then
-               YAML_FILE=cloudbuild-service-upload.yaml
+                YAML_FILE=cloudbuild-upload-service.yaml
             elif [[ "${TAG_NAME}" == "compress"* ]]; then
-               YAML_FILE=cloudbuild-service-compress.yaml
+                YAML_FILE=cloudbuild-compress-service.yaml
             else
-               YAML_FILE=cloudbuild-service-member.yaml
+                YAML_FILE=cloudbuild-member-service.yaml
             fi
-            gcloud builds submit --config ${YAML_FILE} .
+            VERSION=$(echo $TAG_NAME | grep -o '[0-9]\+[.][0-9]\+[.][0-9]\+$')
+            gcloud builds submit --config ${YAML_FILE} --substitutions _VERSION=${VERSION} .
