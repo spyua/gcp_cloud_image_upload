@@ -1,6 +1,7 @@
 name: ci
   
-on: [pull_request]
+on:
+  pull_request:
 
 jobs:
   cd:
@@ -10,18 +11,17 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
 
-     steps:
-        - name: Checkout
-          uses: actions/checkout@v2
-
-        - name: Setup .NET
-          uses: actions/setup-dotnet@v1
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '6.0.x'
           
-        - name: Restore dependencies
-          run: dotnet restore cbk.project.cloudUploadImage.sln
+      - name: Restore dependencies
+        run: dotnet restore cbk.project.cloudUploadImage.sln
           
-        - name: Build
-          run: dotnet build cbk.project.cloudUploadImage.sln --no-restore --configuration Release
+      - name: Build
+        run: dotnet build cbk.project.cloudUploadImage.sln --no-restore --configuration Release
