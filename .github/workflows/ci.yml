@@ -1,0 +1,27 @@
+name: ci
+  
+on: [pull_request]
+
+jobs:
+  cd:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        
+
+     steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+
+        - name: Setup .NET
+          uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+          
+        - name: Restore dependencies
+          run: dotnet restore cbk.project.cloudUploadImage.sln
+          
+        - name: Build
+          run: dotnet build cbk.project.cloudUploadImage.sln --no-restore --configuration Release
