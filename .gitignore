@@ -363,14 +363,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/cbk.cloudUploadImage.Infrastructure/Certificate/server-ca.pem
-/cbk.cloudUploadImage.Infrastructure/Certificate/client-key.pem
-/cbk.cloudUploadImage.Infrastructure/Certificate/client-cert.pem
-/cbk.cloudUploadImage.Infrastructure/CertificateFile/server-ca.pem
-/cbk.cloudUploadImage.Infrastructure/CertificateFile/client-key.pem
-/cbk.cloudUploadImage.Infrastructure/CertificateFile/client-cert.pem
-/cbk.cloudUploadImage.Infrastructure/Files/CertificateFile/server-ca.pem
-/cbk.cloudUploadImage.Infrastructure/Files/CertificateFile/client-key.pem
-/cbk.cloudUploadImage.Infrastructure/Files/CertificateFile/client-cert.pem
-/cbk.cloudUploadImage.Infrastructure/Files/CertificateFile/affable-cacao-389805-297d12d69696.json
-/.sonarqube/conf
+
+# 忽略 .sonarqube 目录
+.sonarqube/
