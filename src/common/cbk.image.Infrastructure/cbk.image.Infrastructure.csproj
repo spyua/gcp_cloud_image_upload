@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\cbk.cloud.serviceProvider\cbk.cloud.serviceProvider.csproj" />
+    <ProjectReference Include="..\cbk.image.Domain\cbk.image.Domain.csproj" />
   </ItemGroup>
 
 </Project>

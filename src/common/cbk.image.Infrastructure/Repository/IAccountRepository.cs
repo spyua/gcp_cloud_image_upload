@@ -1,4 +1,4 @@
-﻿using cbk.image.Infrastructure.Database.Entity;
+﻿using cbk.image.Domain.Entity;
 
 namespace cbk.image.Infrastructure.Repository
 {

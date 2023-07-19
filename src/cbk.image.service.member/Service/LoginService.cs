@@ -2,6 +2,7 @@
 using cbk.image.service.member.Model;
 using cbk.image.Infrastructure.Security.Jwt;
 using cbk.cloud.serviceProvider.KMS;
+using cbk.image.Domain.Entity;
 
 namespace cbk.image.service.member.Service
 {
@@ -37,7 +38,7 @@ namespace cbk.image.service.member.Service
 
             // 將密碼雜湊化並建立新的帳戶
             var hashedPassword = Convert.ToBase64String(encryptedPassword);
-            var account = new Infrastructure.Database.Entity.Account { Name = userName, Password = hashedPassword, CreateTime = DateTime.UtcNow };
+            var account = new Account { Name = userName, Password = hashedPassword, CreateTime = DateTime.UtcNow };
 
             // 儲存新帳戶
             _accountRepository.Add(account);

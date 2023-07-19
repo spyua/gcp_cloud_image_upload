@@ -1,5 +1,5 @@
-﻿using cbk.image.Infrastructure.Database;
-using cbk.image.Infrastructure.Database.Entity;
+﻿using cbk.image.Domain.Entity;
+using cbk.image.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace cbk.image.Infrastructure.Repository
