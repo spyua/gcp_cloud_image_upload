@@ -61,6 +61,8 @@ builder.Services.AddSingleton(provider =>
 builder.Services.AddDbContext<DBContext>((serviceProvider, options) => {
     IDBConnectionBuilder connectionBuilder = new NpgsqlConnectionBuilder<DBConnectionSetting>();
     var connectionSetting = serviceProvider.GetService<DBConnectionSetting>();
+    if (connectionSetting == null)
+        throw new Exception("DBConnectionSetting is null, You don't setting the cloud run EnvironmentVariable");
     var connectionString = connectionBuilder.BuildConnectionString(connectionSetting, true);
     options.UseNpgsql(connectionString);
 });

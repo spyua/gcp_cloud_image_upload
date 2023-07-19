@@ -8,7 +8,7 @@ namespace cbk.image.Infrastructure.Repository
         Task<ImageInformation> ReadAsync(string userName, string fileName);
 
         Task<ImageInformation> ReadAsync(string fileName);
-        void Update(ImageInformation item);
+        void Update(ImageInformation file);
         void Delete(string userName, string fileName);
         Task<List<ImageInformation>> ReadAllAsync(string userName);
     }

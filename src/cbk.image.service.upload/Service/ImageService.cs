@@ -34,7 +34,7 @@ namespace cbk.image.service.upload.Service
             if (file == null || file.Length == 0)
                 throw new Exception("No file selected or the file is empty.");
 
-            UploadResult uploadedObject = null;
+            UploadResult? uploadedObject = null;
             try
             {
 
