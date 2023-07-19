@@ -14,7 +14,7 @@ COPY src/cbk.image.service.upload/*.csproj ./src/cbk.image.service.upload/
 COPY src/common/cbk.image.Infrastructure/*.csproj ./src/common/cbk.image.Infrastructure/
 COPY src/common/cbk.image.Domain/*.csproj ./src/common/cbk.image.Domain/
 COPY src/common/cbk.image.Application/*.csproj ./src/common/cbk.image.Application/
-COPY src/common/cbk.image.web/*.csproj ./src/common/cbk.image.web/
+COPY src/common/cbk.image.Web/*.csproj ./src/common/cbk.image.Web/
 
 
 # execute nuget dll restore, avoid testing
@@ -26,7 +26,7 @@ COPY src/cbk.image.service.upload/. ./src/cbk.image.service.upload/
 COPY src/common/cbk.image.Infrastructure/*.csproj ./src/common/cbk.image.Infrastructure/
 COPY src/common/cbk.image.Domain/*.csproj ./src/common/cbk.image.Domain/
 COPY src/common/cbk.image.Application/*.csproj ./src/common/cbk.image.Application/
-COPY src/common/cbk.image.web/*.csproj ./src/common/cbk.image.web/
+COPY src/common/cbk.image.Web/*.csproj ./src/common/cbk.image.Web/
 
 
 # -c: Configuration
