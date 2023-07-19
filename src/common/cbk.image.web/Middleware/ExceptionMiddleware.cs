@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace cbk.image.web.Middleware
+namespace cbk.image.Web.Middleware
 {
     public class ExceptionMiddleware
     {

@@ -9,7 +9,7 @@ using cbk.image.Infrastructure.CloudRunEnviroment.KMSEncryption;
 using cbk.image.service.compress.Service;
 using cbk.image.Infrastructure.Repository;
 using cbk.cloud.gcp.serviceProvider.CloudRun.EnviromentConfig;
-using cbk.image.web.Middleware;
+using cbk.image.Web.Middleware;
 using cbk.cloud.serviceProvider.Storage;
 
 var builder = WebApplication.CreateBuilder(args);

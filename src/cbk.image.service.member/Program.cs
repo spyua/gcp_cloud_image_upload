@@ -11,7 +11,7 @@ using cbk.image.Infrastructure.Database.DBConnection.Model;
 using cbk.image.Infrastructure.Repository;
 using cbk.image.Infrastructure.Security.Jwt;
 using cbk.image.service.member.Service;
-using cbk.image.web.Middleware;
+using cbk.image.Web.Middleware;
 using JWT.Algorithms;
 using JWT.Extensions.AspNetCore;
 using Microsoft.EntityFrameworkCore;

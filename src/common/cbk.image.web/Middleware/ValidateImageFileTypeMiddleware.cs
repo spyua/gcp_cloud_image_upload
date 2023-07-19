@@ -1,7 +1,7 @@
 ﻿using cbk.image.Application.Models;
 using Microsoft.AspNetCore.Http;
 
-namespace cbk.image.web.Middleware
+namespace cbk.image.Web.Middleware
 {
     public class ValidateImageFileTypeMiddleware
     {

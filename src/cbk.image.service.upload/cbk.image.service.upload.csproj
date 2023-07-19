@@ -21,7 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\common\cbk.image.Application\cbk.image.Application.csproj" />
     <ProjectReference Include="..\common\cbk.image.Infrastructure\cbk.image.Infrastructure.csproj" />
-    <ProjectReference Include="..\common\cbk.image.web\cbk.image.web.csproj" />
+    <ProjectReference Include="..\common\cbk.image.web\cbk.image.Web.csproj" />
   </ItemGroup>
 
 </Project>

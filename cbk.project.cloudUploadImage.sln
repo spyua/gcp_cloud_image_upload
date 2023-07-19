@@ -15,13 +15,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cbk.image.service.compress"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{D65212D3-D055-4972-9A89-EC89C752BB91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cbk.image.Domain", "src\common\cbk.image.Domain\cbk.image.Domain.csproj", "{7C7D1CBD-2EE9-45A7-86C3-13E844F2AEFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cbk.image.Domain", "src\common\cbk.image.Domain\cbk.image.Domain.csproj", "{7C7D1CBD-2EE9-45A7-86C3-13E844F2AEFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cbk.image.Application", "src\common\cbk.image.Application\cbk.image.Application.csproj", "{264C47AF-A6D0-4085-B98B-4F7E574AF2ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cbk.image.Application", "src\common\cbk.image.Application\cbk.image.Application.csproj", "{264C47AF-A6D0-4085-B98B-4F7E574AF2ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cbk.image.Domain.UnitTests", "test\cbk.image.Domain.UnitTests\cbk.image.Domain.UnitTests.csproj", "{518A2ADC-AFF1-4453-B985-71A6E3F0CED3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cbk.image.Domain.UnitTests", "test\cbk.image.Domain.UnitTests\cbk.image.Domain.UnitTests.csproj", "{518A2ADC-AFF1-4453-B985-71A6E3F0CED3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cbk.image.web", "src\common\cbk.image.web\cbk.image.web.csproj", "{15478A43-AF89-46B5-BCEE-746546A2F0A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cbk.image.Web", "src\common\cbk.image.web\cbk.image.Web.csproj", "{15478A43-AF89-46B5-BCEE-746546A2F0A7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cbk.image.Infrastructure", "src\common\cbk.image.Infrastructure\cbk.image.Infrastructure.csproj", "{3F5E44CF-F9CD-4B48-B161-F4A19A39C393}"
 EndProject
