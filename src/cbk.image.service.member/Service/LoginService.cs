@@ -40,6 +40,12 @@ namespace cbk.image.service.member.Service
             var hashedPassword = Convert.ToBase64String(encryptedPassword);
             var account = new Account { Name = name, Password = hashedPassword, CreateTime = DateTime.UtcNow };
 
+            if(account.IsValidPassword(password))
+            {
+                _logger.LogWarning("Password does not meet complexity requirements.");
+                throw new Exception("Password does not meet complexity requirements.");
+            }
+
             // 儲存新帳戶
             _accountRepository.Add(account);
             await _accountRepository.SaveChangesAsync();

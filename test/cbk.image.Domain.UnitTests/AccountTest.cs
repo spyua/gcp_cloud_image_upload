@@ -11,10 +11,10 @@ namespace cbk.image.Domain.UnitTests
             var account = new Account();
 
             // Act
-            Action act = () => account.Password = "Complex$123";
+            account.Password = "Complex$123";
 
             // Assert
-            act.Should().NotThrow<ArgumentException>();
+            account.IsValidPassword(account.Password).Should().BeTrue();
         }
 
         [Test]
@@ -23,10 +23,11 @@ namespace cbk.image.Domain.UnitTests
             var account = new Account();
 
             // Act
-            Action act = () => account.Password = "simplepass";
+            account.Password = "simplepass";
 
             // Assert
-            act.Should().Throw<ArgumentException>().WithMessage("Password does not meet complexity requirements.");
+            account.IsValidPassword(account.Password).Should().BeFalse();
+           
         }
 
         [Test]
