@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\common\cbk.image.Infrastructure\cbk.image.Infrastructure.csproj" />
-    <ProjectReference Include="..\common\cbk.image.web\cbk.image.Web.csproj" />
+    <ProjectReference Include="..\common\cbk.image.Web\cbk.image.Web.csproj" />
   </ItemGroup>
 
 </Project>
