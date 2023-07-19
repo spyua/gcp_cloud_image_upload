@@ -1,4 +1,4 @@
-﻿using cbk.image.Infrastructure.Models;
+﻿using cbk.image.Application.Models;
 using cbk.image.service.upload.Dto;
 using cbk.image.service.upload.Service;
 using Microsoft.AspNetCore.Authorization;

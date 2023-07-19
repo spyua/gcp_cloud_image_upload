@@ -1,4 +1,4 @@
-﻿namespace cbk.image.Infrastructure.Models
+﻿namespace cbk.image.Application.Models
 {
     public class ApiResponse
     {

@@ -19,8 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\cbk.cloud.serviceProvider\cbk.cloud.serviceProvider.csproj" />
     <ProjectReference Include="..\cbk.image.Infrastructure\cbk.image.Infrastructure.csproj" />
+    <ProjectReference Include="..\common\cbk.image.Application\cbk.image.Application.csproj" />
+    <ProjectReference Include="..\common\cbk.image.Infrastructure\cbk.image.Infrastructure.csproj" />
+    <ProjectReference Include="..\common\cbk.image.web\cbk.image.web.csproj" />
   </ItemGroup>
 
 </Project>

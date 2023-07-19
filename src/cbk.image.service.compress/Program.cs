@@ -4,13 +4,13 @@ using cbk.image.Infrastructure.Database.DBConnection.Model;
 using cbk.image.Infrastructure.Database.DBConnection;
 using Microsoft.EntityFrameworkCore;
 using cbk.image.Infrastructure.Database;
-using cbk.cloud.gcp.serviceProvider.CloudRun.EnviromentConfig;
 using cbk.image.Infrastructure.CloudRunEnviroment.DB;
 using cbk.image.Infrastructure.CloudRunEnviroment.KMSEncryption;
-using cbk.image.Infrastructure.Middleware;
-using cbk.cloud.serviceProvider.Storage;
 using cbk.image.service.compress.Service;
 using cbk.image.Infrastructure.Repository;
+using cbk.cloud.gcp.serviceProvider.CloudRun.EnviromentConfig;
+using cbk.image.web.Middleware;
+using cbk.cloud.serviceProvider.Storage;
 
 var builder = WebApplication.CreateBuilder(args);
 // Configure the application.

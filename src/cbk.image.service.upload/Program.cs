@@ -1,4 +1,3 @@
-using cbk.image.Infrastructure.CloudRunEnviroment;
 using cbk.image.Infrastructure.Database;
 using cbk.image.Infrastructure.Database.DBConnection.Model;
 using cbk.image.Infrastructure.Database.DBConnection;
@@ -8,7 +7,6 @@ using JWT.Algorithms;
 using JWT.Extensions.AspNetCore;
 using Microsoft.OpenApi.Models;
 using Microsoft.IdentityModel.Tokens;
-using cbk.image.Infrastructure.Middleware;
 using cbk.cloud.serviceProvider.Storage;
 using cbk.image.service.upload.Service;
 using cbk.image.Infrastructure.Repository;
@@ -17,6 +15,8 @@ using cbk.image.Infrastructure.CloudRunEnviroment.DB;
 using cbk.image.Infrastructure.CloudRunEnviroment.KMSEncryption;
 using cbk.cloud.gcp.serviceProvider.CloudRun.EnviromentConfig;
 using cbk.image.Infrastructure.CloudRunEnviroment.IAM;
+using cbk.image.web.Middleware;
+using cbk.image.Infrastructure.CloudRunEnviroment;
 
 var builder = WebApplication.CreateBuilder(args);
 

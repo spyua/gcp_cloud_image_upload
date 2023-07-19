@@ -2,7 +2,6 @@
 using cbk.image.service.member.Model;
 using cbk.image.Infrastructure.Security.Jwt;
 using cbk.cloud.serviceProvider.KMS;
-using cbk.cloud.serviceProvider.SecretManager;
 
 namespace cbk.image.service.member.Service
 {

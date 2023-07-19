@@ -1,11 +1,11 @@
-﻿using cbk.image.Infrastructure.Models;
-using cbk.image.service.compress.Dto;
+﻿using cbk.image.service.compress.Dto;
 using cbk.image.service.compress.Service;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using cbk.cloud.serviceProvider.Eventarc.EventModel;
 using cbk.cloud.serviceProvider.Eventarc.Model;
 using cbk.cloud.serviceProvider.Eventarc;
+using cbk.image.Application.Models;
 
 namespace cbk.image.service.compress.Controllers
 {
