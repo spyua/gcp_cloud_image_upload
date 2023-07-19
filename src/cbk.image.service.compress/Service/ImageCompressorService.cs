@@ -28,7 +28,7 @@ namespace cbk.image.service.compress.Service
             if (originalImage == null)
                 throw new Exception("Image not found.");
 
-            UploadResult compressedImage = null;
+            UploadResult? compressedImage = null; 
             try
             {
                 // Compress the originalImage

@@ -1,11 +1,11 @@
-﻿using cbk.image.Infrastructure.Models;
-using cbk.image.service.compress.Dto;
+﻿using cbk.image.service.compress.Dto;
 using cbk.image.service.compress.Service;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using cbk.cloud.serviceProvider.Eventarc.EventModel;
 using cbk.cloud.serviceProvider.Eventarc.Model;
 using cbk.cloud.serviceProvider.Eventarc;
+using cbk.image.Application.Models;
 
 namespace cbk.image.service.compress.Controllers
 {
@@ -14,7 +14,7 @@ namespace cbk.image.service.compress.Controllers
     public class ImageCompressorController : ControllerBase
     {
         private readonly ILogger<ImageCompressorController> _logger;
-        private IImageCompressorService _imageCompressorService;
+        private readonly IImageCompressorService _imageCompressorService;
 
         public ImageCompressorController(ILogger<ImageCompressorController> logger,
                                          IImageCompressorService imageCompressorService)
@@ -32,23 +32,22 @@ namespace cbk.image.service.compress.Controllers
             {
                 Message = "Compress Image Success",
                 Data = compressImageFile
-            }); ;
+            });
         }
 
         [HttpGet(nameof(TestRequest))]
         public async Task<ActionResult<ApiResponse<ImageInformationDto>>> TestRequest([FromQuery] ImageInformationCompress image)
         {
-
-            return Ok(new ApiResponse<ImageInformationDto>
+            return await Task.FromResult(Ok(new ApiResponse<ImageInformationDto>
             {
                 Message = "Test Request Success",
                 Data = new ImageInformationDto()
                 {
-                    FileName = "Comporess Test"
-                   ,FileLinkPath = "Compress Test"
+                    FileName = "Compress Test",
+                    FileLinkPath = "Compress Test"
                 }
-            });
-               
+            }));
+
         }
 
 

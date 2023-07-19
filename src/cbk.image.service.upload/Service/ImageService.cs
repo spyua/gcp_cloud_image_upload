@@ -1,7 +1,7 @@
 ﻿using cbk.cloud.serviceProvider.Storage;
+using cbk.image.Domain.Entity;
 using cbk.image.Infrastructure.CloudRunEnviroment.IAM;
 using cbk.image.Infrastructure.CloudRunEnviroment.Storage;
-using cbk.image.Infrastructure.Database.Entity;
 using cbk.image.Infrastructure.Repository;
 using cbk.image.service.upload.Dto;
 
@@ -34,7 +34,7 @@ namespace cbk.image.service.upload.Service
             if (file == null || file.Length == 0)
                 throw new Exception("No file selected or the file is empty.");
 
-            UploadResult uploadedObject = null;
+            UploadResult? uploadedObject = null;
             try
             {
 

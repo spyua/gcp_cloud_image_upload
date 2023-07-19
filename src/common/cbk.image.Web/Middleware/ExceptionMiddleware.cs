@@ -1,13 +1,8 @@
-﻿using cbk.image.Infrastructure.Models;
+﻿using cbk.image.Application.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace cbk.image.Infrastructure.Middleware
+namespace cbk.image.Web.Middleware
 {
     public class ExceptionMiddleware
     {

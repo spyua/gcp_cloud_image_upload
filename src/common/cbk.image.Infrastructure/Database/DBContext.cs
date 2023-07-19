@@ -1,4 +1,4 @@
-﻿using cbk.image.Infrastructure.Database.Entity;
+﻿using cbk.image.Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace cbk.image.Infrastructure.Database

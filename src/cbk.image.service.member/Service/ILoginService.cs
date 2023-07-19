@@ -5,6 +5,6 @@ namespace cbk.image.service.member.Service
     public interface ILoginService
     {
         Task<AccountDto> CreateAccount(string name, string password);
-        Task<AccountDto> LoginAccount(string userName, string password);       
+        Task<AccountDto> LoginAccount(string name, string password);       
     }
 }

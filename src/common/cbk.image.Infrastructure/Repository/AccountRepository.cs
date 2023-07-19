@@ -1,5 +1,5 @@
-﻿using cbk.image.Infrastructure.Database;
-using cbk.image.Infrastructure.Database.Entity;
+﻿using cbk.image.Domain.Entity;
+using cbk.image.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace cbk.image.Infrastructure.Repository
@@ -13,9 +13,9 @@ namespace cbk.image.Infrastructure.Repository
             _context = dbContext;
         }
 
-        public void Add(Account item)
+        public void Add(Account account)
         {
-            _context.Accounts.Add(item);  
+            _context.Accounts.Add(account);  
         }
 
         public async Task<Account?> GetByName(string name)

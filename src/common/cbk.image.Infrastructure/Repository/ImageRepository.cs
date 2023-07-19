@@ -1,5 +1,5 @@
-﻿using cbk.image.Infrastructure.Database;
-using cbk.image.Infrastructure.Database.Entity;
+﻿using cbk.image.Domain.Entity;
+using cbk.image.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace cbk.image.Infrastructure.Repository
@@ -13,9 +13,9 @@ namespace cbk.image.Infrastructure.Repository
             _context = dbContext;
         }
 
-        public void Create(ImageInformation item)
+        public void Create(ImageInformation file)
         {
-            _context.ImageInformations.Add(item);
+            _context.ImageInformations.Add(file);
         }
 
         public async Task<ImageInformation> ReadAsync(string fileName)
@@ -51,9 +51,9 @@ namespace cbk.image.Infrastructure.Repository
 
             _context.ImageInformations.Remove(imageInformation);
         }
-        public void Update(ImageInformation item)
+        public void Update(ImageInformation file)
         {
-            _context.ImageInformations.Update(item);
+            _context.ImageInformations.Update(file);
         }
         public async Task SaveChangesAsync()
         {
